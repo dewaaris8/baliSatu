@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePackageBookingCheckoutRequest;
 use App\Http\Requests\StorePackageBookingRequest;
+use App\Http\Requests\UpdatePackageBankRequest;
+use App\Http\Requests\UpdatePackageBookingRequest;
 use App\Models\PackageBank;
 use App\Models\PackageBooking;
 use App\Models\PackagePhoto;
 use App\Models\PackageTour;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +53,7 @@ class FrontController extends Controller
             $validated['end_date'] = $endDate;
             $validated['user_id'] = $user->id;
             $validated['is_paid'] = false;
-            $validated['proof'] = 'coba.png';
+            $validated['proof'] = 'coba2.png';
             $validated['package_tour_id'] = $packageTour->id;
             $validated['package_bank_id'] = $bank->id;
             $validated['insurance'] = $insurance;
@@ -71,4 +75,56 @@ class FrontController extends Controller
 
         return redirect()->route('front.book_finish');
     }
+
+    public function choose_bank(PackageBooking $packageBooking){
+        $user = Auth::user();
+        if($packageBooking->user_id != $user->id){
+            abort(403);
+        }
+        $banks = PackageBank::all();
+        return view('front.choose_bank', compact('packageBooking', 'banks'));
+    }
+
+    public function choose_bank_store(UpdatePackageBookingRequest $request, PackageBooking $packageBooking){ 
+        $user = Auth::user();
+        if($packageBooking->user_id != $user->id){
+            abort(403);
+        }
+
+        DB::transaction(function () use ($request, $packageBooking) {
+            $validated = $request->validated();
+            $packageBooking->update([
+                'package_bank_id' => $validated['package_bank_id'],
+
+            ]);
+    });
+    return redirect()->route('front.book_payment', $packageBooking->id);
+    }
+
+    public function book_payment(PackageBooking $packageBooking) {
+        return view('front.book_payment', compact('packageBooking'));
+    }
+
+    public function book_payment_store(StorePackageBookingCheckoutRequest $request, PackageBooking $packageBooking){
+        $user = Auth::user();
+        if($packageBooking->user_id != $user->id){
+            abort(403);
+        }
+
+        DB::transaction(function () use ($request, $user ,$packageBooking) {
+            $validated = $request->validated();
+            if($request->hasFile('proof')){
+                $proofPath = $request->file('proof')->store('proofs','public');
+                $validated['proof'] = $proofPath; 
+            }
+            $packageBooking->update($validated);        
+        });
+
+        return redirect()->route('front.book_finish');
+    }
+
+    public function book_finish() {
+        return view('front.book_finish');
+    }
+
 }
