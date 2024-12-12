@@ -61,6 +61,30 @@ class FrontController extends Controller
             $validated['sub_total'] = $sub_total;
             $validated['total_amount'] = $sub_total + $insurance + $tax;
 
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = false;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
+
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => rand(),
+                    'gross_amount' => $validated['total_amount'],
+                ),
+                'customer_details' => array(
+                    'first_name' => $user->name,
+                    'email' => $user->email,
+                ),
+            );
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+            $validated['snap_token'] = $snapToken;
+
             $packageBooking = PackageBooking::create($validated);
 
             $packageBookingId = $packageBooking->id;
@@ -102,7 +126,7 @@ class FrontController extends Controller
     }
 
     public function book_payment(PackageBooking $packageBooking) {
-        return view('front.book_payment', compact('packageBooking'));
+        return view('front.book_coba', compact('packageBooking'));
     }
 
     public function book_payment_store(StorePackageBookingCheckoutRequest $request, PackageBooking $packageBooking){
@@ -111,16 +135,28 @@ class FrontController extends Controller
             abort(403);
         }
 
-        DB::transaction(function () use ($request, $user ,$packageBooking) {
-            $validated = $request->validated();
-            if($request->hasFile('proof')){
-                $proofPath = $request->file('proof')->store('proofs','public');
-                $validated['proof'] = $proofPath; 
-            }
-            $packageBooking->update($validated);        
+        // DB::transaction(function () use ($request, $user ,$packageBooking) {
+        //     $validated = $request->validated();
+        //     if($request->hasFile('proof')){
+        //         $proofPath = $request->file('proof')->store('proofs','public');
+        //         $validated['proof'] = $proofPath; 
+        //     }
+        //     $packageBooking->update($validated);        
+        // });
+
+        DB::transaction(function () use ($packageBooking) {
+            $packageBooking->update(['is_paid' => true,]);
         });
 
         return redirect()->route('front.book_finish');
+        // menit9 tutor 
+    }
+
+    public function checkout_success(PackageBooking $packageBooking) {
+        DB::transaction(function () use ($packageBooking) {
+            $packageBooking->update(['is_paid' => true,]);
+        });
+        return view('front.book_finish');
     }
 
     public function book_finish() {

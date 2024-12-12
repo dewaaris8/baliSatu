@@ -107,11 +107,32 @@
               <p class="text-white text-sm tracking-035 leading-[22px]">Total Payment</p>
               <p id="grandtotal" class="text-[#EED202] font-semibold text-lg leading-[26px] tracking-[0.6px]">Rp. {{number_format($packageBooking->total_amount, 0, '.' ,' ')}}</p>
             </div>
-            <button type="submit" id="confirm-payment" class="p-[16px_24px] rounded-xl bg-blue w-fit disabled:bg-[#BFBFBF] text-white hover:bg-[#06C755] transition-all duration-300" disabled>Confirm</button>
+            <button type="submit" id="pay-button" class="p-[16px_24px] rounded-xl 
+            bg-blue w-fit disabled:bg-[#BFBFBF] text-white hover:bg-[#06C755] transition-all duration-300" >Confirm</button>
           </div>
         </form>
     </section>
 
     <script src="{{asset('js/payment.js')}}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>
+    <script type="text/javascript">
+      document.getElementById('pay-button').onclick = function(){
+        // SnapToken acquired from previous step
+        snap.pay('{{ $packageBooking->snap_token }}', {
+          // Optional
+          onSuccess: function(result){
+            window.location.href = '{{ route('front.book_finish') }}';
+          },
+          // Optional
+          onPending: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          },
+          // Optional
+          onError: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          }
+        });
+      };
+    </script>
 </body>
 </html>

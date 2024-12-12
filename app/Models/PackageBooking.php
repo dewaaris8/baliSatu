@@ -22,7 +22,8 @@ class PackageBooking extends Model
         'sub_total',
         'tax',
         'insurance',
-        'proof', // add this field to ensure it's filled
+        'proof', 
+        'snap_token'// add this field to ensure it's filled
     ];
     
     

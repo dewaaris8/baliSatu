@@ -42,6 +42,9 @@ Route::middleware('auth')->group(function () {
        Route::patch('/book/payment/{packageBooking}/save',[FrontController::class,'book_payment_store'])
        ->name('front.book_payment_store');
 
+       Route::get('/book/finish/{packageBooking}/',[FrontController::class,'checkout_success'])
+       ->name('front.checkout_success');
+
        Route::get('/book-finish',[FrontController::class,'book_finish'])
        ->name('front.book_finish');
        });
