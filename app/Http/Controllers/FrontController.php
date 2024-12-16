@@ -24,11 +24,13 @@ class FrontController extends Controller
         return view('front.index', compact('package_tours'));
     }
 
-    public function details(PackageTour $packageTour){
-        $latestPhotos = $packageTour->package_photos()->orderByDesc('id')->take(3)->get(); 
-        return view('front.details', compact('packageTour', 'latestPhotos'));
-
+    public function details(PackageTour $packageTour)
+    {
+        $latestPhotos = $packageTour->package_photos()->orderByDesc('id')->take(3)->get();
+        $reviews = $packageTour->reviews()->latest()->get(); // Retrieve reviews, ordered by the latest
+        return view('front.details', compact('packageTour', 'latestPhotos', 'reviews'));
     }
+    
 
     public function book(PackageTour $packageTour){
         return view('front.book', compact('packageTour'));

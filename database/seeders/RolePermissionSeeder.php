@@ -19,6 +19,8 @@ class RolePermissionSeeder extends Seeder
         $permissions = [
             'manage categories',
             'manage packages',
+            'manage inclusions',
+            'manage plans',
             'manage package banks',
             'checkout package',
             'manage transactions',

@@ -25,9 +25,28 @@ class PackageTour extends Model
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * Get all of the package_photos for the PackageTour
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function package_photos(){
         return $this->hasMany(PackagePhoto::class);
     }
+
+    public function tour_inclusions(){
+        return $this->hasMany(TourInclusion::class);
+    }
+
+    public function tour_plans(){
+        return $this->hasMany(TourPlan::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 
 
 }

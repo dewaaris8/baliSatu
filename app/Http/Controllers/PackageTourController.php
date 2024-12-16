@@ -72,8 +72,9 @@ class PackageTourController extends Controller
     public function show(PackageTour $packageTour)
     {
         //
+        $tour_inclusions = $packageTour->tour_inclusions()->orderByDesc('id')->get();
         $latestPhotos = $packageTour->package_photos()->orderByDesc('id')->take(3)->get();
-        return view('admin.package_tours.show', compact('packageTour', 'latestPhotos'));
+        return view('admin.package_tours.show', compact('packageTour', 'latestPhotos','tour_inclusions'));
     }
 
     /**
@@ -86,7 +87,6 @@ class PackageTourController extends Controller
         $latestPhotos = $packageTour->package_photos()->orderByDesc('id')->take(3)->get();
         return view('admin.package_tours.edit', compact('categories','packageTour', 'latestPhotos',));
     }
-
     /**
      * Update the specified resource in storage.
      */

@@ -136,6 +136,22 @@
             </div>
           </a>
         </div>
+        <div class="reviews-section">
+          <h3 class="font-semibold text-lg mb-4">Reviews</h3>
+          @if($reviews->isEmpty())
+              <p class="text-gray-500">No reviews available for this package yet.</p>
+          @else
+              @foreach($reviews as $review)
+                  <div class="review-item border-b pb-4 mb-4">
+                      <p class="font-bold">{{ $review->user->name }}</p> <!-- Assuming a user relationship exists -->
+                      <p class="text-sm text-gray-600">Rating: {{ $review->rating }} / 5</p>
+                      <p class="mt-2">{{ $review->review }}</p>
+                      <p class="text-xs text-gray-400">{{ $review->created_at->format('d M, Y') }}</p>
+                  </div>
+              @endforeach
+          @endif
+      </div>
+      
         <div class="navigation-bar fixed bottom-0 z-50 max-w-[640px] w-full h-[85px] bg-white rounded-t-[25px] flex items-center justify-between px-6">
           <div class="flex flex-col justify-center gap-1">
             <p class="text-darkGrey text-sm tracking-035 leading-[22px]">Total Price</p>

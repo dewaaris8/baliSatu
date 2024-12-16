@@ -32,6 +32,9 @@
                         <a href="{{Route('admin.package_tours.edit', $packageTour)}}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                             Edit
                         </a>
+                        <a href="{{Route('admin.tour_inclusions.create', $packageTour)}}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                            add Inclusion or Exclusion
+                        </a>
                         <form action="{{Route('admin.package_tours.destroy', $packageTour)}}" method="POST">
                             @csrf
                             @method('DELETE')
@@ -50,6 +53,14 @@
                         <img src="{{Storage::url($photo->photo)}}" alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
                     @empty
                         <p class="text-slate-500 text-sm">No Photos</p>
+                    @endforelse
+                </div>
+
+                <div class="flex flex-row gap-x-5">
+                    @forelse ($tour_inclusions as $inclusion )
+                        <h1>{{$inclusion->description}}</h1>
+                    @empty
+                        <p class="text-slate-500 text-sm">No inclusion</p>
                     @endforelse
                 </div>
 

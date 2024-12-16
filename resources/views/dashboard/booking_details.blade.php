@@ -78,6 +78,28 @@
               </div>
             </div>
           </div>
+          <div class="flex flex-col gap-3 px-4">
+            <p class="font-semibold">Leave a Review</p>
+            <form action="{{ route('package_tours.reviews.store', $packageBooking->tour->id) }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="rating" class="block text-sm">Rating (1-5):</label>
+                    <select name="rating" id="rating" class="w-full p-2 border rounded">
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="review" class="block text-sm">Review:</label>
+                    <textarea name="review" id="review" rows="4" class="w-full p-2 border rounded" placeholder="Write your review..."></textarea>
+                </div>
+                <button type="submit" class="bg-blue text-white p-2 rounded">Submit Review</button>
+            </form>
+        </div>
+        
           <div class="flex flex-col gap-3 px-4 ">
             <a href="home.html" class="p-[16px_24px] rounded-xl bg-blue w-full text-white text-center flex items-center justify-center gap-3  hover:bg-[#06C755] transition-all duration-300">
               <div class="w-6 h-6">
@@ -87,6 +109,10 @@
             </a>
           </div>
         </div>
+        <div class="flex flex-col gap-3 px-4">
+    
+</div>
+
     </section>
 </body>
 </html>
