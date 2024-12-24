@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{asset('output.css')}}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  @vite('resources/css/app.css')
 </head>
 <body class="font-poppins text-black">
     <section id="content" class="max-w-[640px] w-full mx-auto bg-[#F9F2EF] min-h-screen flex flex-col gap-8 pb-[120px]">
@@ -77,6 +78,60 @@
             </div>
           </a>
         </div>
+    </section>
+    <div class="w-full bg-[#15192d] mx-auto border-[1px] border-[#6666662d] shadow-md rounded-b-[20px] items-center flex justify-center h-[100px]">
+      <div class="w-[1300px] h-full flex items-center justify-between">
+          <!-- Logo Section -->
+          <div class="w-[30%] flex justify-start">
+              <img class="w-[60px] h-[60px] object-cover" src="{{asset('assets/logos/balisatulogo.png')}}" alt=""> 
+            </div>
+  
+          <!-- Navigation Links -->
+          <div class="w-[30%] text-white flex justify-center gap-[30px]">
+              <a href="{{ route('front.index') }}">Home</a>
+              <a href="">Travel</a>
+              <a href="{{ route('front.about-us') }}">About Us</a>
+              <a href="">Contact Us</a>
+          </div>
+  
+          <!-- User Section -->
+          <div class="w-[30%] gap-[10px] justify-end flex">
+              @if(auth()->check())
+                  <!-- If Logged In: Display User Name -->
+                  <div class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
+                      Welcome, {{ auth()->user()->name }}!
+                  </div>
+              @else
+                  <!-- If Not Logged In: Display Login and Register Buttons -->
+                  <a href="{{ route('login') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] bg-[#3dbeeb] text-[white] border-[#fff]">
+                      Login
+                  </a>
+                  <a href="{{ route('register') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
+                      Register
+                  </a>
+              @endif
+          </div>
+      </div>
+    </div>
+    <section class="w-full max-w-[1300px] mx-auto mt-[100px] gap-[20px] flex flex-col">
+      <div class="w-full flex items-center justify-between">
+        <div class="">
+            <h1 class="text-[36px] font-medium">All Your Tour Package</h1>
+          <P class="text-gray-500 text-[12px]">Check Your Schedule Here</P>
+        </div>
+        <div class="">
+            <h1 class="text-[20px] font-medium">Hi, Welcome </h1>
+          <P class="text-[#3dbeeb] text-[20px]"><span class="text-black"></span>{{Auth::user()->name}}</P>
+        </div>
+      </div>
+      <hr>
+      <div class="w-full gap-[20px] flex flex-col">
+        <div class="w-full  rounded-[20px]">
+          <div class="w-full bg-[#F9FAFC] text-[12px] py-[10px] px-[20px] rounded-t-[10px]">{{ auth()->user()->name }}</div>
+          <div class="w-full bg-[#15192d] text-white py-[20px] px-[20px] rounded-b-[10px]">{{ auth()->user()->name }}</div>
+          </div>
+        </div>
+      </div>
     </section>
 </body>
 </html>

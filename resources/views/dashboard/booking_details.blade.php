@@ -5,9 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{asset('output.css')}}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  @vite('resources/css/app.css')
+  <style>
+    .hero-img {
+        background-image: url('{{asset('assets/hero/hero.png')}}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+  
+    .bg-footer {
+        background-image: url('{{asset('assets/hero/footer.png')}}');
+        background-size: cover;
+        background-position: center;
+    }
+    </style>
 </head>
 <body class="font-poppins text-black">
-    <section id="content" class="max-w-[640px] w-full mx-auto bg-[#F9F2EF] min-h-screen flex flex-col gap-8 pb-[120px]">
+    {{-- <section id="content" class="max-w-[640px] w-full mx-auto bg-[#F9F2EF] min-h-screen flex flex-col gap-8 pb-[120px]">
         <nav class="mt-8 px-4 w-full flex items-center justify-between">
           <a href="{{route('dashboard.bookings')}}">
             <img src="{{asset('assets/icons/back.png')}}" alt="back">
@@ -110,9 +125,53 @@
           </div>
         </div>
         <div class="flex flex-col gap-3 px-4">
+      </div>
+    </section> --}}
+    <section class="w-full h-[60vh] hero-img">
+      <div class="w-full mx-auto border-b-[2px] border-l-[2px] border-r-[2px] border-white shadow-md rounded-b-[20px] items-center flex justify-center h-[100px]">
+        <div class="w-[1300px]  h-full flex items-center justify-between">
+            <!-- Logo Section -->
+            <div class="w-[30%] flex  justify-start">
+                <img class="w-[60px] h-[60px] object-cover" src="{{asset('assets/logos/balisatulogo.png')}}" alt=""> 
+              </div>
     
-</div>
-
+            <!-- Navigation Links -->
+            <div class="w-[30%] text-white flex justify-center gap-[30px]">
+                <a href="{{ route('front.index') }}">Home</a>
+                <a href="">Travel</a>
+                <a href="{{ route('front.about-us') }}">About Us</a>
+                <a href="">Contact Us</a>
+            </div>
+    
+            <!-- User Section -->
+            <div class="w-[30%] gap-[10px] justify-end flex">
+                @if(auth()->check())
+                    <!-- If Logged In: Display User Name -->
+                    <div class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
+                        Welcome, {{ auth()->user()->name }}!
+                    </div>
+                @else
+                    <!-- If Not Logged In: Display Login and Register Buttons -->
+                    <a href="{{ route('login') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] bg-[#3dbeeb] text-[white] border-[#fff]">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
+                        Register
+                    </a>
+                @endif
+            </div>
+        </div>
+      </div>
+      <div class="h-max flex flex-col justify-center mt-[10vh]  max-w-[1300px] w-full mx-auto">
+        <div class="">
+          <h1 class="text-white w-[800px] text-[32px] font-semibold">Tour Booking Detail</h1>
+          <p class="text-[18px] text-white">Happy Traveling</p>
+        </div>
+        <div class="w-full flex gap-5 justify-between">
+          <div class="flex-[50%] h-[400px] bg-white border-[1px] border-[#D9D9D9]"></div>
+          <div class="flex-[30%] h-[600px] bg-white border-[1px] border-[#D9D9D9]"></div>
+        </div>
+      </div>
     </section>
 </body>
 </html>

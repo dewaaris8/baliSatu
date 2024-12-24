@@ -6,6 +6,7 @@ use App\Http\Requests\StorePackageBookingCheckoutRequest;
 use App\Http\Requests\StorePackageBookingRequest;
 use App\Http\Requests\UpdatePackageBankRequest;
 use App\Http\Requests\UpdatePackageBookingRequest;
+use App\Models\Category;
 use App\Models\PackageBank;
 use App\Models\PackageBooking;
 use App\Models\PackagePhoto;
@@ -19,16 +20,33 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
     //
-    public function index(){
-        $package_tours = PackageTour::orderByDesc('id')->take(3)->get();
-        return view('front.index', compact('package_tours'));
-    }
+    public function index()
+{
+    $package_tours = PackageTour::with('reviews')->orderByDesc('id')->take(3)->get();
+
+    // Add average rating to each package tour
+    $package_tours->each(function ($package) {
+        $package->average_rating = $package->reviews->avg('rating');
+    });
+
+    $categories = Category::orderByDesc('id')->take(3)->get();
+
+    return view('front.index', compact('package_tours', 'categories'));
+}
+
 
     public function details(PackageTour $packageTour)
     {
         $latestPhotos = $packageTour->package_photos()->orderByDesc('id')->take(3)->get();
         $reviews = $packageTour->reviews()->latest()->get(); // Retrieve reviews, ordered by the latest
-        return view('front.details', compact('packageTour', 'latestPhotos', 'reviews'));
+        $averageRating = $packageTour->reviews()->avg('rating');
+        $inclusions = $packageTour->tour_inclusions()->orderByDesc('id')->get();
+        $plans = $packageTour->tour_plans()->orderByDesc('id')->get();
+        return view('front.details', compact('packageTour', 'latestPhotos', 'reviews', 'averageRating', 'inclusions','plans'));
+    }
+    
+    public function about_us() {
+        return view('front.about_us');
     }
     
 
@@ -94,7 +112,7 @@ class FrontController extends Controller
         });
 
         if($packageBookingId){
-            return redirect()->route('front.choose_bank', $packageBookingId);
+            return redirect()->route('front.book_payment', $packageBookingId);
         } else {
             return back()->withErrors('failed to create booking');
         }
@@ -128,7 +146,7 @@ class FrontController extends Controller
     }
 
     public function book_payment(PackageBooking $packageBooking) {
-        return view('front.book_coba', compact('packageBooking'));
+        return view('front.book_payment', compact('packageBooking'));
     }
 
     public function book_payment_store(StorePackageBookingCheckoutRequest $request, PackageBooking $packageBooking){

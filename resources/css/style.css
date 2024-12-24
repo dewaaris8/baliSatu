@@ -1,0 +1,5 @@
+.hero-img {
+    background-image: url("../assets/backgrounds/.hero-img.png"); /* Adjust path based on CSS location */
+    background-size: cover;
+    background-position: center;
+}

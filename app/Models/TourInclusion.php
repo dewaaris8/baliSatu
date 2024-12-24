@@ -18,6 +18,10 @@ class TourInclusion extends Model
     ];
 
     public function package_tour(){
-        return $this->belongsTo(PackageTour::class);
+        return $this->belongsTo(PackageTour::class, 'package_tour_id');
     }
+
+
+
+    
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 // Frontend routes
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
+Route::get('/about-us', [FrontController::class, 'about_us'])->name('front.about-us');
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
 Route::get('/detail/{packageTour:slug}', [FrontController::class, 'details'])->name('front.details');
 
