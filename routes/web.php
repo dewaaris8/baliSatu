@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 // Frontend routes
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/about-us', [FrontController::class, 'about_us'])->name('front.about-us');
+Route::get('/contact-us', [FrontController::class, 'contact_us'])->name('front.contact-us');
+Route::get('/travel', [FrontController::class, 'travel'])->name('front.travel');
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
 Route::get('/detail/{packageTour:slug}', [FrontController::class, 'details'])->name('front.details');
+
 
 // Dashboard route
 Route::get('/dashboard', function () {
@@ -45,6 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/book-finish', [FrontController::class, 'book_finish'])->name('front.book_finish');
 
         Route::post('/package-tours/{id}/reviews', [ReviewController::class, 'store'])->name('package_tours.reviews.store');
+        Route::post('/contact-us/send', [FrontController::class, 'send'])->name('contact.send');
     });
 
     // Dashboard-specific routes

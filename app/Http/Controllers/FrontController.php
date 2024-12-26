@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class FrontController extends Controller
 {
@@ -47,6 +48,49 @@ class FrontController extends Controller
     
     public function about_us() {
         return view('front.about_us');
+    }
+
+    public function contact_us() {
+        return view('front.contact_us');
+    }
+
+    public function travel(Request $request) {
+        $query = PackageTour::query();
+
+        // Apply search by name
+        if ($request->filled('search')) {
+            $query->where('name', 'LIKE', '%' . $request->input('search') . '%');
+        }
+
+        // Apply filter by category
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->input('category'));
+        }
+
+        $package_tours = $query->with('category', 'reviews')->paginate(9); // Paginate results
+
+        $categories = Category::all(); // Fetch all categories for the dropdown
+
+        return view('front.travel', compact('package_tours', 'categories'));
+    }
+
+    public function send(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'nullable|string',
+            'message' => 'required|string',
+        ]);
+    
+        // Pass the validated data to the email view
+        Mail::send('emails.contact', $validated, function ($mail) use ($validated) {
+            $mail->to('lionsinescanorsama8@gmail.com')
+                 ->subject('Contact Form Submission');
+        });
+    
+        return response()->json(['message' => 'Email sent successfully']);
     }
     
 

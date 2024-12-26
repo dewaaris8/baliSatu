@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{asset('output.css')}}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   @vite('resources/css/app.css')
   <style>
@@ -42,7 +43,7 @@
                 <div class="flex gap-1 items-center">
                   <div class="w-4 h-4">
                     <img src="{{asset('assets/icons/calendar-grey.svg')}}" class="w-4 h-4" alt="icon">
-                  </div>
+                  </div>  
                   <span class="text-darkGrey text-sm tracking-035 leading-[22px]">{{$packageBooking->start_date->format('d, M, Y')}} - {{$packageBooking->end_date->format('d, M, Y')}}</span>
                 </div>
                 @if ($packageBooking->is_paid)
@@ -167,11 +168,125 @@
           <h1 class="text-white w-[800px] text-[32px] font-semibold">Tour Booking Detail</h1>
           <p class="text-[18px] text-white">Happy Traveling</p>
         </div>
-        <div class="w-full flex gap-5 justify-between">
-          <div class="flex-[50%] h-[400px] bg-white border-[1px] border-[#D9D9D9]"></div>
-          <div class="flex-[30%] h-[600px] bg-white border-[1px] border-[#D9D9D9]"></div>
+        <div class="w-full flex gap-5 mt-4 justify-between">
+          <div class="flex-[50%] h-max overflow-hidden  bg-white shadow-md rounded-[20px] ">
+            <div class="w-full flex bg-[#FAB404] gap-[30px] items-center p-[20px] ">
+              <div class="flex h-[70px] w-[80px] rounded-[100px] items-center justify-center bg-[#3DC0EC]">
+                <i class="fa-solid fa-wallet text-[25px] text-white"></i>
+              </div>
+              <div class="flex w-full flex-col  items-start justify-center ">
+                <h1 class="text-white text-[20px] font-semibold">Status Payment Success!</h1>
+                <p class="text-[16px] text-white">Your order has been successfully paid. Thank you for your purchase!</p>
+              </div>
+            </div>
+            <div class="text-[18px] p-[20px]">
+              <h1>Booking Details</h1>
+              <div class="w-full mt-4 rounded-[20px] flex p-[20px] flex-col gap-[20px] justify-center h-max border-[1px] border-gray-300">
+                <div class="w-full flex justify-between">
+                  <p class="text-[16px] text-gray-500">Name</p>
+                  <p class="text-[16px] text-black">{{$packageBooking->customer->name}}</p>
+                </div>
+                <div class="w-full flex justify-between">
+                  <p class="text-[16px] text-gray-500">Quantity</p>
+                  <p class="text-[16px] text-black">{{$packageBooking->quantity}}</p>
+                </div>
+                <div class="w-full flex justify-between">
+                  <p class="text-[16px] text-gray-500">Price</p>
+                  <p class="text-[16px] text-black">Rp. {{number_format($packageBooking->tour->price, 0, '.' ,' ')}}</p>
+                </div>
+                <div class="w-full flex justify-between">
+                  <p class="text-[16px] text-gray-500">Sub Total</p>
+                  <p class="text-[16px] text-black">Rp. {{number_format($packageBooking->sub_total, 0, '.' ,' ')}}</p>
+                </div>
+                <div class="w-full flex justify-between">
+                  <p class="text-[16px] text-gray-500">Total Payment (price, tax, insurance) </p>
+                  <p class="text-[16px] text-black">Rp. {{number_format($packageBooking->total_amount, 0, '.' ,' ')}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex-[30%] flex flex-col gap-[20px] mb-5 h-max bg-white p-[20px] shadow-md rounded-[20px] ">
+            <h1 class="text-[18px] font-medium">Package Tour Details</h1>
+            <div class="w-full h-max flex flex-col gap-[10px] overflow-hidden">
+              <img src="{{Storage::url($packageBooking->tour->thumbnail)}}" class="w-full rounded-[20px] h-[200px] object-cover object-center" alt="thumbnail">
+              <h1 class="text-[16px]">{{$packageBooking->tour->name}}</h1>
+              <span class="text-darkGrey text-sm tracking-035 leading-[22px]">{{$packageBooking->start_date->format('d, M, Y')}} - {{$packageBooking->end_date->format('d, M, Y')}}</span>
+              <p class="w-full text-[12px] text-justify text-black">
+                {{$packageBooking->tour->about}}
+              </p>
+            </div>
+            <div class="flex flex-col gap-3">
+              <p class="font-medium text-[18px]">Leave a Review</p>
+              <form action="{{ route('package_tours.reviews.store', $packageBooking->tour->id) }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="rating" class="block text-sm">Rating (1-5):</label>
+                    <select name="rating" id="rating" class="w-full p-2 border rounded">
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="review" class="block text-sm">Review:</label>
+                    <textarea name="review" id="review" rows="4" class="w-full p-2 border rounded" placeholder="Write your review..."></textarea>
+                </div>
+                <button type="submit" class="bg-blue w-full text-white p-2 rounded">Submit Review</button>
+            </form>
+            </div>
+            
+          </div>
         </div>
       </div>
     </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const stars = document.querySelectorAll("#rating-stars .star");
+          const ratingInput = document.getElementById("rating");
+  
+          if (!ratingInput) {
+              console.error("Hidden rating input not found!");
+              return;
+          }
+  
+          if (stars.length === 0) {
+              console.error("No star elements found!");
+              return;
+          }
+  
+          stars.forEach((star) => {
+              star.addEventListener("click", function () {
+                  const selectedRating = this.getAttribute("data-value");
+                  
+                  if (!selectedRating) {
+                      console.error("Star does not have a data-value attribute.");
+                      return;
+                  }
+  
+                  // Update the hidden input value
+                  ratingInput.value = selectedRating;
+                  console.log("Selected rating:", selectedRating);
+  
+                  // Highlight the selected stars and reset the others
+                  stars.forEach((s) => {
+                      const starValue = parseInt(s.getAttribute("data-value"), 10);
+                      if (starValue <= selectedRating) {
+                          s.classList.add("text-yellow-400");
+                          s.classList.remove("text-gray-400");
+                      } else {
+                          s.classList.add("text-gray-400");
+                          s.classList.remove("text-yellow-400");
+                      }
+                  });
+              });
+          });
+      });
+  </script>
+  
+  
+    
 </body>
 </html>

@@ -8,7 +8,7 @@
   @vite('resources/css/app.css')
 </head>
 <body class="font-poppins text-black">
-    <section id="content" class="max-w-[640px] w-full mx-auto bg-[#F9F2EF] min-h-screen flex flex-col gap-8 pb-[120px]">
+    {{-- <section id="content" class="max-w-[640px] w-full mx-auto bg-[#F9F2EF] min-h-screen flex flex-col gap-8 pb-[120px]">
         <nav class="mt-8 px-4 w-full flex items-center justify-between">
           <a href="payment.html">
             <img src="{{asset('assets/icons/back.png')}}" alt="back">
@@ -78,7 +78,7 @@
             </div>
           </a>
         </div>
-    </section>
+    </section> --}}
     <div class="w-full bg-[#15192d] mx-auto border-[1px] border-[#6666662d] shadow-md rounded-b-[20px] items-center flex justify-center h-[100px]">
       <div class="w-[1300px] h-full flex items-center justify-between">
           <!-- Logo Section -->
@@ -125,13 +125,52 @@
         </div>
       </div>
       <hr>
-      <div class="w-full gap-[20px] flex flex-col">
-        <div class="w-full  rounded-[20px]">
-          <div class="w-full bg-[#F9FAFC] text-[12px] py-[10px] px-[20px] rounded-t-[10px]">{{ auth()->user()->name }}</div>
-          <div class="w-full bg-[#15192d] text-white py-[20px] px-[20px] rounded-b-[10px]">{{ auth()->user()->name }}</div>
-          </div>
+      @php
+    // Filter the bookings where is_paid is true and paginate them
+        $paginatedBookings = Auth::user()
+            ->bookings()
+            ->where('is_paid', true) // Query Builder method
+            ->paginate(5); // 5 items per page
+      @endphp
+
+<div class="w-full gap-[20px] flex flex-col">
+    @forelse ($paginatedBookings as $booking)
+        <div class="w-full rounded-[20px]">
+            <a href="{{ route('dashboard.booking_details', $booking->id) }}" class="card">
+                <div class="w-full bg-[#F9FAFC] text-[12px] py-[10px] px-[20px] rounded-t-[10px]">
+                    {{ auth()->user()->name }}
+                </div>
+                <div class="w-full flex justify-between bg-[#15192d] text-white py-[20px] px-[20px] rounded-b-[10px]">
+                    <div class="">
+                        {{ $loop->iteration + ($paginatedBookings->currentPage() - 1) * $paginatedBookings->perPage() }}. {{ auth()->user()->name }}
+                    </div> 
+                    <div class="text-left w-max">
+                        {{ $booking->tour->name }}
+                    </div>  
+                    <div class="">
+                        <p>{{ $booking->tour->days }} days | {{ $booking->quantity }} packs</p>
+                    </div>  
+                    <div class="">
+                        Rp. {{ number_format($booking->total_amount, 0, '.', ' ') }}
+                    </div>  
+                    <div class="">
+                        <div class="success-badge w-fit border border-[#60A5FA] p-[4px_8px] rounded-lg bg-[#EFF6FF] flex items-center justify-center">
+                            <span class="text-xs leading-[22px] tracking-035 text-[#2563EB]">Success Paid</span>
+                        </div>
+                    </div>  
+                </div>  
+            </a>
         </div>
-      </div>
+    @empty
+        <p>No bookings found</p>
+    @endforelse
+
+    <!-- Pagination Links -->
+    <div class="mt-4 flex justify-center">
+        {{ $paginatedBookings->links() }} <!-- Laravel's built-in pagination links -->
+    </div>
+</div>
+
     </section>
 </body>
 </html>
