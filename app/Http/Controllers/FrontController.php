@@ -6,6 +6,7 @@ use App\Http\Requests\StorePackageBookingCheckoutRequest;
 use App\Http\Requests\StorePackageBookingRequest;
 use App\Http\Requests\UpdatePackageBankRequest;
 use App\Http\Requests\UpdatePackageBookingRequest;
+use App\Mail\ContactFormMail;
 use App\Models\Category;
 use App\Models\PackageBank;
 use App\Models\PackageBooking;
@@ -48,10 +49,30 @@ class FrontController extends Controller
     
     public function about_us() {
         return view('front.about_us');
+        // return view('email.create');
     }
 
     public function contact_us() {
         return view('front.contact_us');
+    }
+
+    public function sendEmail(Request $request)
+    {
+        // Validasi input form
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'message' => 'required|string',
+        ]);
+
+        // Kirim email menggunakan Mailable
+        
+        Mail::to('lionsinescanorsama8@gmail.com') // Ganti dengan alamat email tujuan
+            ->send(new ContactFormMail($request->all()));
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('front.contact-us')->with('success', 'Pesan Anda telah terkirim!');
     }
 
     public function travel(Request $request) {
@@ -66,32 +87,36 @@ class FrontController extends Controller
         if ($request->filled('category')) {
             $query->where('category_id', $request->input('category'));
         }
+        // Add average rating to each package tour
+        $package_tours = $query->with('category', 'reviews')->orderByDesc('id')->paginate(9); // Paginate results
 
-        $package_tours = $query->with('category', 'reviews')->paginate(9); // Paginate results
+        // Add average rating to each package tour
+        $package_tours->each(function ($package) {
+            $package->average_rating = $package->reviews->avg('rating');
+        });
 
         $categories = Category::all(); // Fetch all categories for the dropdown
 
         return view('front.travel', compact('package_tours', 'categories'));
     }
 
-    public function send(Request $request)
-    {
-        $validated = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'nullable|string',
-            'message' => 'required|string',
-        ]);
+    // public function send(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'title' => 'required|string',
+    //         'content' => 'required|string',
+    //     ]);
+
+    //     auth
     
-        // Pass the validated data to the email view
-        Mail::send('emails.contact', $validated, function ($mail) use ($validated) {
-            $mail->to('lionsinescanorsama8@gmail.com')
-                 ->subject('Contact Form Submission');
-        });
+    //     // Pass the validated data to the email view
+    //     Mail::send('emails.contact', $validated, function ($mail) use ($validated) {
+    //         $mail->to('lionsinescanorsama8@gmail.com')
+    //              ->subject('Contact Form Submission');
+    //     });
     
-        return response()->json(['message' => 'Email sent successfully']);
-    }
+    //     return response()->json(['message' => 'Email sent successfully']);
+    // }
     
 
     public function book(PackageTour $packageTour){

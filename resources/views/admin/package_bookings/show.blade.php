@@ -123,11 +123,11 @@
                         </div>
                     </div>
                     <div class="flex flex-col gap-y-4">
-                        <h3 class="text-indigo-950 text-xl font-bold">
+                        {{-- <h3 class="text-indigo-950 text-xl font-bold">
                             Bukti Pembayaran
                         </h3>
         
-                        <img src="{{Storage::url($packageBooking->proof)}}" alt="" class="rounded-2xl object-cover w-[300px] h-[200px]">
+                        <img src="{{Storage::url($packageBooking->proof)}}" alt="" class="rounded-2xl object-cover w-[300px] h-[200px]"> --}}
                     </div>
                 </div>
 

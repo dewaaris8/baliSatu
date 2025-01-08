@@ -9,7 +9,7 @@
 </head>
 <body class="font-poppins text-black">
     <section class="w-full h-max flex">
-      <div class="w-[50%] flex justify-center items-center h-[100vh] fixed bg-[#3dbeeb]">
+      <div class="w-[50%] lg:flex justify-center items-center hidden h-[100vh] lg:fixed bg-[#3dbeeb]">
         <img src="{{asset('assets//backgrounds/Success-Illustration.png')}}" class="w-[60%] h-[60%] object-contain" alt="background">
       </div>
       <div class="w-[100%] flex  h-[100vh]">
@@ -23,9 +23,9 @@
             bg-blue w-fit disabled:bg-[#BFBFBF] text-white hover:bg-[#06C755] transition-all duration-300" >Confirm</button>
           </div> --}}
         </div>
-        <div class="w-[50%] h-full"></div>
-        <div class="w-[50%] h-max">
-          <section id="content" class="bg-white w-[60%] mx-auto min-h-screen flex flex-col gap-8 pb-[120px]">
+        <div class="w-[50%] hidden lg:flex h-full"></div>
+        <div class="lg:w-[50%] w-full h-max">
+          <section id="content" class="bg-white w-[80%] lg:w-[60%] mx-auto min-h-screen flex flex-col gap-8 pb-[120px]">
             <nav class="mt-8 px-4 w-full flex items-center justify-between">
               <a href="checkout.html">
                 <img src="{{asset('assets//icons/back.png')}}" alt="back">

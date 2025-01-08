@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,16 +38,23 @@ return [
     'mailers' => [
 
         'smtp' => [
-            'transport' => 'smtp',
-            'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', '127.0.0.1'),
-            'port' => env('MAIL_PORT', 2525),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
-            'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
-        ],
+        'transport' => 'smtp',
+        'url' => env('MAIL_URL'),
+        'host' => env('MAIL_HOST', 'smtp.mailtrap.io'), // Use Mailtrap's SMTP server
+        'port' => env('MAIL_PORT', 2525), // Mailtrap's SMTP port
+        'encryption' => env('MAIL_ENCRYPTION', 'tls'), // TLS is recommended
+        'username' => env('MAIL_USERNAME'), // Your Mailtrap username
+        'password' => env('MAIL_PASSWORD'), // Your Mailtrap password
+        'timeout' => null,
+        'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+    ],
+
+    'from' => [
+    'address' => env('MAIL_FROM_ADDRESS', 'lionsinescanorsama8@gmail.com'), // Replace with your email address or a default one
+    'name' => env('MAIL_FROM_NAME', 'Bali Satu'), // Replace with your application name
+    ],
+
+
 
         'ses' => [
             'transport' => 'ses',

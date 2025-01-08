@@ -186,174 +186,250 @@
     
     {{-- her0 --}}
     <section class="w-full h-screen hero-img">
-      <div class="w-full mx-auto border-b-[2px] border-l-[2px] border-r-[2px] border-white shadow-md rounded-b-[20px] items-center flex justify-center h-[100px]">
-        <div class="w-[1300px] h-full flex items-center justify-between">
-            <!-- Logo Section -->
-            <div class="w-[30%] flex justify-start">
-                <img class="w-[60px] h-[60px] object-cover" src="{{asset('assets/logos/balisatulogo.png')}}" alt=""> 
+      <div class="w-full mx-auto border-b-[2px] border-l-[2px] border-r-[2px] border-white shadow-md rounded-b-[20px] flex items-center justify-center h-[100px]">
+        <div class="w-full max-w-[1300px] h-full flex items-center justify-between px-4">
+          <!-- Logo Section -->
+          <div class="w-[30%] flex justify-start items-center">
+            <img class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] object-cover" src="{{ asset('assets/logos/balisatulogo.png') }}" alt="Bali Satu Logo">
+          </div>
+      
+          <!-- Navigation Links -->
+          <div class="hidden lg:flex w-max text-white items-center gap-[20px]">
+            <a href="{{ route('front.index') }}" class="hover:text-[#3dbeeb] transition">Home</a>
+            <a href="{{ route('front.travel') }}" class="hover:text-[#3dbeeb] transition">Travel</a>
+            <a href="{{ route('front.about-us') }}" class="hover:text-[#3dbeeb] transition">About Us</a>
+            <a href="{{ route('front.contact-us') }}" class="hover:text-[#3dbeeb] transition">Contact Us</a>
+            <a href="{{ route('dashboard.bookings') }}" class="hover:text-[#3dbeeb] transition">My Bookings</a>
+          </div>
+      
+          <!-- User Section -->
+          <div class="w-[30%] flex justify-end items-center gap-[10px]">
+            @if(auth()->check())
+            <!-- If Logged In: Display User Name -->
+            <div class="hidden sm:flex lg:block md:hidden sm:items-center sm:ms-6 relative">
+              <!-- Button -->
+              <button id="dropdownButton" 
+                  class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-[#3dbeeb] dark:text-[#3dbeeb] bg-[#15192d]    hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                  @auth
+                  <div>{{ Auth::user()->name }}</div>
+                  @endauth
+          
+                  <div class="ms-1">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" 
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+                              clip-rule="evenodd" />
+                      </svg>
+                  </div>
+              </button>
+          
+              <!-- Dropdown Menu -->
+              <div id="dropdownMenu" 
+                  class="absolute right-0 mt-2 w-48 text-[#3dbeeb] dark:text-[#3dbeeb] bg-[#15192d] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg hidden">
+                  <a href="{{ route('logout') }}" 
+                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      Logout
+                  </a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                      @csrf
+                  </form>
               </div>
-    
-            <!-- Navigation Links -->
-            <div class="w-[30%] text-white flex justify-center gap-[30px]">
-                <a href="{{ route('front.index') }}">Home</a>
-                <a href="">Travel</a>
-                <a href="{{ route('front.about-us') }}">About Us</a>
-                <a href="">Contact Us</a>
+          </div>
+            @else
+            <!-- If Not Logged In: Display Login and Register Buttons -->
+            <a href="{{ route('login') }}" class="hidden px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] bg-[#3dbeeb] text-white border-[1px] border-[#fff]">
+              Login
+            </a>
+            <a href="{{ route('register') }}" class="hidden px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
+              Register
+            </a>
+            @endif
+          </div>
+      
+          <!-- Mobile Navigation Toggle -->
+          <div class="lg:hidden flex items-center text-white">
+            <button id="menu-toggle" class="p-2 focus:outline-none">
+              <i class="fa-solid fa-bars text-[20px]"></i>
+            </button>
+          </div>
+        </div>
+      
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden flex-col bg-gray-800 text-white w-full absolute top-[100px] left-0 py-4 space-y-2">
+          <a href="{{ route('front.index') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">Home</a>
+          <a href="{{ route('front.travel') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">Travel</a>
+          <a href="{{ route('front.about-us') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">About Us</a>
+          <a href="{{ route('front.contact-us') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">Contact Us</a>
+          <a href="{{ route('dashboard.bookings') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">My Bookings</a>
+          <div class="w-full flex gap-2">
+            @if(auth()->check())
+            <!-- If Logged In: Display User Name -->
+            <div class="hidden sm:flex px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
+              Welcome, {{ auth()->user()->name }}!
             </div>
-    
-            <!-- User Section -->
-            <div class="w-[30%] gap-[10px] justify-end flex">
-                @if(auth()->check())
-                    <!-- If Logged In: Display User Name -->
-                    <div class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
-                        Welcome, {{ auth()->user()->name }}!
-                    </div>
-                @else
-                    <!-- If Not Logged In: Display Login and Register Buttons -->
-                    <a href="{{ route('login') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] bg-[#3dbeeb] text-[white] border-[#fff]">
-                        Login
-                    </a>
-                    <a href="{{ route('register') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
-                        Register
-                    </a>
-                @endif
-            </div>
+            @else
+            <!-- If Not Logged In: Display Login and Register Buttons -->
+            <a href="{{ route('login') }}" class="mx-[10px] px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] bg-[#3dbeeb] text-white border-[1px] border-[#fff]">
+              Login
+            </a>
+            <a href="{{ route('register') }}" class=" px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
+              Register
+            </a>
+            @endif
+          </div>
         </div>
       </div>
-      <div class="h-[calc(100vh-100px)] flex flex-col justify-center  max-w-[1300px] w-full mx-auto">
-        <h1 class="text-white w-[800px] text-[60px] font-semibold">Let’s Explore 
+      
+      <div class="h-[calc(100vh-100px)] flex flex-col justify-center lg:items-start md:items-start items-center md:max-w-[80%]  lg:max-w-[1300px] w-full mx-auto">
+        <h1 class="text-white lg:w-[800px] w-[100%] text-center lg:text-start md:text-start md:w-[100%] lg:text-[60px] md:text-[60px] text-[30px] font-semibold">Let’s Explore 
           Heaven Together</h1>
-          <a href="">
-            <div class="flex items-center mt-4 border-[2px] border-white w-max p-[20px] rounded-[30px] text-[18px] font-semibold text-white justify-center">Explore More</div>
+          <a href="{{ route('front.travel') }}">
+            <div class="flex items-center mt-4 border-[2px] border-white w-max p-[20px] mx-auto rounded-[30px] text-[18px] font-semibold text-white justify-center">Explore More</div>
           </a>
       </div>
     </section>
-    <section class="w-full max-w-[1300px] mx-auto mt-[100px] gap-[20px] flex flex-col h-max">
-      <div class="max-w-[1300px] flex items-center justify-between w-full mx-auto">
+    <section class="w-full lg:max-w-[1300px] md:max-w-[1300px] mx-auto mt-[100px] gap-[20px] flex flex-col h-max">
+      <div class="lg:max-w-[1300px] md:max-w-[80%] flex lg:flex-row flex-col md:flex-row lg:items-center md:items-center items-center lg:justify-between md:justify-between w-full mx-auto">
         <div class="flex flex-col">
           <p class="text-gray-500 text-[12px]">CHOOSE YOUR ADVENTURE</p>
           <h1 class="text-black text-[36px] font-semibold">Travel Made for You</h1>
         </div>
-        <div class="text-gray-500 text-[18px] w-[500px]">
+        <div class="text-gray-500 text-[18px] lg:text-start md:text-start  text-justify lg:w-[500px] md:w-[500px] w-[80%]">
           From beach retreats to cultural explorations, our travel categories offer something for every traveler. Discover your perfect getaway and let us bring your dream vacation to life!
         </div>
       </div>
-      <div class="w-full flex justify-between space-x-4">
+      <div class="lg:w-full w-[80%] mx-auto gap-5 items-center flex-col flex lg:flex-row justify-center lg:space-x-4">
         @foreach ($categories as $category)
-          <div class="flex-1 h-[500px] rounded-[20px] bg-black"><img class="w-full h-full object-cover rounded-[20px]" src="{{Storage::url($category->icon)}}" alt=""></div>
+          <div class="lg:flex-1 w-full lg:h-[500px] h-[200px] rounded-[20px] bg-black"><img class="w-full lg:h-full h-[200px] object-cover rounded-[20px]" src="{{Storage::url($category->icon)}}" alt=""></div>
         @endforeach
-        
       </div>      
     </section>
     <section class="w-full max-w-[1300px] mx-auto mt-[100px] gap-[20px] flex flex-col h-max">
-      <div class="max-w-[1300px] flex items-center justify-between w-full mx-auto">
+      <div class="lg:max-w-[1300px] lg:w-full w-[80%] md:max-w-[80%] flex items-center justify-between mx-auto">
         <div class="flex flex-col">
           <p class="text-gray-500 text-[12px]">PICTURES OF OUR TRAVEL</p>
           <h1 class="text-black text-[36px] font-semibold">Our Gallery</h1>
         </div>
       </div>
-      <div class="w-full flex justify-between space-x-4">
-          <div class="flex-1 h-[250px] rounded-[20px] bg-black"></div>
-          <div class="flex-1 h-[250px] rounded-[20px] bg-black"></div>
+      <div class="lg:w-full md:w-[80%] w-[80%] gap-5 lg:gap-0 md:gap-0 mx-auto md:mx-auto flex lg:flex-row md:flex-row flex-col lg:justify-between md:justify-between md:space-x-4 lg:space-x-4">
+          <div class="flex-1 h-[250px] rounded-[20px] bg-black overflow-hidden">
+            <img src="{{asset('assets/hero/home5.jpg')}}" class="w-[100%] h-[200px] lg:w-full md:w-full lg:h-full md:h-full object-cover" alt="">
+          </div>
+          <div class="flex-1 h-[250px] rounded-[20px] overflow-hidden bg-black">
+            <img src="{{asset('assets/hero/home2.jpg')}}" class="w-[100%] h-[200px] lg:w-full md:w-full lg:h-full md:h-full object-cover" alt="">
+          </div>
       </div>      
-      <div class="w-full flex justify-between space-x-4">
-          <div class="flex-1 h-[250px] rounded-[20px] bg-black"></div>
-          <div class="flex-1 h-[250px] rounded-[20px] bg-black"></div>
-          <div class="flex-1 h-[250px] rounded-[20px] bg-black"></div>
+      <div class="lg:w-full md:w-[80%] w-[80%] md:mx-auto flex md:flex-row lg:flex-row flex-col mx-auto lg:justify-between md:justify-between space-x-4">
+          <div class="flex-1 h-[250px] rounded-[20px] overflow-hidden bg-black">
+            <img src="{{asset('assets/hero/home4.jpg')}}" class="w-full h-full object-fill" alt="">
+          </div>
+          <div class="flex-1 h-[250px] rounded-[20px] overflow-hidden bg-black">
+            <img src="{{asset('assets/hero/home1.jpg')}}" class="w-full hidden lg:block md:block mb-10 h-full object-right-bottom object-cover" alt="">
+          </div>
+          <div class="flex-1 h-[250px] rounded-[20px] bg-black overflow-hidden">
+            <img src="{{asset('assets/hero/hom3.jpg')}}" class="w-full hidden lg:block md:block h-full object-cover" alt="">
+          </div>
       </div>      
     </section>
-    <section class="w-full max-w-[1300px] mx-auto mt-[100px] gap-[20px] flex flex-col h-max">
-      <div class="max-w-[1300px] flex items-center justify-between w-full mx-auto">
-          <div class="flex w-full flex-col">
-              <p class="text-gray-500 text-center text-[12px]">EXPLORE POPULAR PACKAGE</p>
-              <h1 class="text-black text-center text-[36px] font-semibold">
-                  What we offer is an unforgettable<br>journey and experience
-              </h1>
-          </div>
+    <section class="w-full max-w-[1300px] mx-auto mt-[100px] gap-[20px] flex flex-col h-max px-4">
+      <div class="lg:max-w-[1300px] md:w-[80%] md:mx-auto flex items-center justify-between lg:w-full mx-auto">
+        <div class="flex w-full flex-col">
+          <p class="text-gray-500 text-center text-[12px] sm:text-[14px]">EXPLORE POPULAR PACKAGE</p>
+          <h1 class="text-black text-center text-[28px] sm:text-[36px] font-semibold">
+            What we offer is an unforgettable<br class="hidden sm:block"> journey and experience
+          </h1>
+        </div>
       </div>
-      <div class="w-full flex justify-between space-x-4">
-          @foreach ($package_tours as $tour)
-              <div class="flex-1 h-max rounded-[20px]">
-                  <!-- Thumbnail -->
-                  <img 
-                      class="w-full h-[500px] object-cover rounded-[20px]" 
-                      src="{{ Storage::url($tour->thumbnail) }}" 
-                      alt="{{ $tour->name }}"
-                  >
-                  <!-- Tour Name -->
-                  <h1 class="text-black text-[24px] font-semibold">{{ $tour->name }}</h1>
-                  <!-- Tour Details -->
-                  <div class="flex justify-between">
-                      <div class="flex gap-[10px]">
-                          <div>
-                              <p class="text-[14px]">
-                                  <i class="fa-solid mr-2 fa-location-dot" style="color: #3dbeeb;"></i>
-                                  {{ $tour->location }}
-                              </p>
-                          </div>
-                          <div>
-                              <p class="text-[14px]">
-                                  <i class="fa-solid fa-umbrella-beach mr-2" style="color: #3dbeeb;"></i>
-                                  {{ $tour->category->name }}
-                              </p>
-                          </div>
-                          <div>
-                              <p class="text-[14px]">
-                                  <i class="fa-solid fa-calendar mr-2" style="color: #3dbeeb;"></i>
-                                  {{ $tour->days }} Days, {{ $tour->days - 1 }} Nights
-                              </p>
-                          </div>
-                      </div>
-                      <!-- Average Rating -->
-                      <div class="flex items-center gap-2">
-                          @if($tour->average_rating)
-                              <svg 
-                                  xmlns="http://www.w3.org/2000/svg" 
-                                  class="w-5 h-5" 
-                                  viewBox="0 0 24 24" 
-                                  fill="#FFD700"
-                              >
-                                  <path 
-                                      d="M12 17.27L18.18 21l-1.64-7.19L21 9.24l-7.19-.61L12 2 10.19 8.63 3 9.24l5.46 4.57L6.82 21 12 17.27z" 
-                                  />
-                              </svg>
-                              <p class="text-[14px]">{{ number_format($tour->average_rating, 1) }}</p>
-                          @else
-                              <p class="text-[14px] text-gray-500">No reviews</p>
-                          @endif
-                      </div>
-                  </div>
-                  <div class="flex justify-between mt-5 items-center">
-                    <div class="">
-                      Rp.{{ $tour->price }} /Packs
-                    </div>
-                    <div class="">
-                      <a href="{{route('front.details', $tour->slug)}}"><div class="w-max py-[10px] px-[20px] border-[1px] border-[#3dbeeb] bg-[#3dbeeb] text-white rounded-[20px]">Book Now</div></a>
-                    </div>
-                  </div>
+      <div class="lg:w-full md:w-[80%] md:mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        @foreach ($package_tours as $tour)
+        <div class="flex-1 h-max rounded-[20px] bg-white shadow-md p-4">
+          <!-- Thumbnail -->
+          <img 
+            class="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover rounded-[20px]" 
+            src="{{ Storage::url($tour->thumbnail) }}" 
+            alt="{{ $tour->name }}"
+          >
+          <!-- Tour Name -->
+          <h1 class="text-black text-[20px] sm:text-[24px] font-semibold mt-4">{{ $tour->name }}</h1>
+          <!-- Tour Details -->
+          <div class="flex flex-wrap justify-between gap-2 mt-2">
+            <div class="flex gap-[10px]">
+              <div>
+                <p class="text-[12px] sm:text-[14px]">
+                  <i class="fa-solid mr-2 fa-location-dot" style="color: #3dbeeb;"></i>
+                  {{ $tour->location }}
+                </p>
               </div>
-          @endforeach
+              <div>
+                <p class="text-[12px] sm:text-[14px]">
+                  <i class="fa-solid fa-umbrella-beach mr-2" style="color: #3dbeeb;"></i>
+                  {{ $tour->category->name }}
+                </p>
+              </div>
+              <div>
+                <p class="text-[12px] sm:text-[14px]">
+                  <i class="fa-solid fa-calendar mr-2" style="color: #3dbeeb;"></i>
+                  {{ $tour->days }} Days, {{ $tour->days - 1 }} Nights
+                </p>
+              </div>
+            </div>
+            <!-- Average Rating -->
+            <div class="flex items-center gap-2">
+              @if($tour->average_rating)
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                class="w-4 h-4 sm:w-5 sm:h-5" 
+                viewBox="0 0 24 24" 
+                fill="#FFD700"
+              >
+                <path 
+                  d="M12 17.27L18.18 21l-1.64-7.19L21 9.24l-7.19-.61L12 2 10.19 8.63 3 9.24l5.46 4.57L6.82 21 12 17.27z" 
+                />
+              </svg>
+              <p class="text-[12px] sm:text-[14px]">{{ number_format($tour->average_rating, 1) }}</p>
+              @else
+              <p class="text-[12px] sm:text-[14px] text-gray-500">No reviews</p>
+              @endif
+            </div>
+          </div>
+          <!-- Price and Button -->
+          <div class="flex justify-between mt-5 items-center">
+            <div class="text-[12px] sm:text-[14px]">
+              Rp.{{ $tour->price }} /Packs
+            </div>
+            <div>
+              <a href="{{route('front.details', $tour->slug)}}">
+                <div class="w-max py-[10px] px-[20px] border-[1px] border-[#3dbeeb] bg-[#3dbeeb] text-white rounded-[20px] text-[12px] sm:text-[14px]">
+                  Book Now
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        @endforeach
       </div>
-  </section>
-  <section class="w-full bg-footer h-[450px] mx-auto mt-[100px] gap-[20px] flex flex-col">
-    <div class="max-w-[1300px] flex items-center justify-between w-full mx-auto">
-      <div class="w-full flex justify-between space-x-4">
+    </section>
+    
+  <section class="w-full bg-footer h-[300px] mx-auto mt-[100px] gap-[20px] flex flex-col">
+    <div class="lg:max-w-[1300px] md:w-[80%] flex-col lg:flex-row flex items-center justify-between lg:w-full mx-auto">
+      <div class="w-full flex flex-col lg:flex-row lg:justify-between space-x-4">
         <div class="flex-1 mt-8 text-white text-[36px]">
           <h1 class="">Lets’s Connect With Us</h1>
-          <a href=""><u>balisatu@gmail.com</u></a>
+          <a href="https://gmail.com/"><u>balisatu@gmail.com</u></a>
         </div>
-        <div class="text-right flex-col justify-end mt-8">
+        <div class="text-left lg:text-right md:text-right flex-col justify-end mt-8">
           <div class="">
-            <a href="" class="text-[20px] text-white">About Us</a>
+            <a href="{{ route('front.about-us') }}" class="text-[20px] text-white">About Us</a>
           </div>
           <div class="">
-            <a href="" class="text-[20px] text-white">Contact Us</a>
+            <a href="{{ route('front.contact-us') }}" class="text-[20px] text-white">Contact Us</a>
           </div>
           <div class="">
-            <a href="" class="text-[20px] text-white">Instagram</a>
+            <a href="https://www.instagram.com/balisatu_holidays/" class="text-[20px] text-white">Instagram</a>
           </div>
           <div class="">
-            <a href="" class="text-[20px] text-white">Facebook</a>
+            <a href="https://www.facebook.com/balisatuholidays" class="text-[20px] text-white">Facebook</a>
           </div>
           
         </div>
@@ -361,6 +437,28 @@
     </div>
   </section>
   
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+  <script>
+    // Handle button click to toggle dropdown
+    document.getElementById('dropdownButton').addEventListener('click', function (e) {
+        e.stopPropagation(); // Prevent click from bubbling up
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function () {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (!dropdownMenu.classList.contains('hidden')) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+</script>
 @endsection
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -368,5 +466,7 @@
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <script src="{{asset('js/flickity-slider.js')}}"></script>
     <script src="{{asset('js/two-lines-text.js')}}"></script>
+    <script src="{{asset('js/dropdownmenu.js')}}"></script>
+    
 </body>
 </html>

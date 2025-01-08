@@ -8,8 +8,8 @@
   @vite('resources/css/app.css')
 </head>
 <body class="font-poppins text-black">
-  <div class="w-[100%] flex items-center justify-center h-[100vh]">
-    <div class="w-[50%] p-[20px] h-full">
+  <div class="w-[100%] flex items-start justify-center h-[100vh]">
+    <div class="w-[50%] hidden lg:block p-[20px] h-[100vh] left-0 fixed">
       <div class="w-full h-full relative rounded-[20px]">
         <div class="absolute w-[100%] h-[100%] flex items-end 
          justify-center p-[20px]">
@@ -18,11 +18,11 @@
         <img src="{{asset('assets/login/login-bg.png')}}" class="w-[100%] h-[100%] object-cover rounded-[20px]" alt="background">
       </div>
     </div>
-    <div class="w-[50%] flex flex-col items-center justify-center h-full bg-white">
-      <div class="w-[80%] h-full flex flex-col gap-[50px] justify-center">
+    <div class="lg:w-[50%] w-full absolute right-0  flex flex-col items-center justify-center h-max bg-white">
+      <div class="w-[80%] h-full py-16 flex flex-col gap-[50px] justify-center">
         <div class="">
           <h1 class="text-[34px] font-medium">Welcome!</h1>
-          <p class="text-[20px]"><a class="font-semibold underline" href="{{route('register')}}">Create a free account </a>or login to start your holiday</p>
+          <p class="text-[20px]">Already have an account? <a class="font-semibold underline" href="{{route('login')}}">Login here to start your holiday</a></p>
         </div>
         <div class="">
           <form method="POST" action="{{ route('register') }}" class="flex flex-col w-full bg-white  gap-8 rounded-[22px] items-center">
@@ -36,6 +36,9 @@
                   </div>
                   <input type="text" class="appearance-none outline-none w-full text-sm rounded-[100px] placeholder:text-[#BFBFBF] tracking-[0.35px]" placeholder="Enter Your name" name="name">
                 </div>
+                @error('name')
+                  <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
               </div>
               <div class="flex flex-col gap-1 w-full">
                 <p class="font-semibold">Email</p>
@@ -45,6 +48,9 @@
                   </div>
                   <input type="email" name="email" class="appearance-none outline-none w-full text-sm rounded-[100px] placeholder:text-[#BFBFBF] tracking-[0.35px]" placeholder="Your email address">
                 </div>
+                @error('email')
+                  <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
               </div>
               <div class="flex flex-col gap-1 w-full">
                 <p class="font-semibold">Phone Number</p>
@@ -54,6 +60,9 @@
                   </div>
                   <input type="number" name="phone_number" class="appearance-none outline-none w-full text-sm rounded-[100px] placeholder:text-[#BFBFBF] tracking-[0.35px]" placeholder="Enter Your Phone Number" >
                 </div>
+                @error('phone_number')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
               </div>
               <div class="flex flex-col gap-1 w-full">
                 <p class="font-semibold">Password</p>
@@ -64,9 +73,12 @@
                   <input type="password"
                   name="password" class="appearance-none rounded-[100px] outline-none w-full text-sm placeholder:text-[#BFBFBF] tracking-[0.35px]" placeholder="Enter your valid password" >
                 </div>
+                @error('password')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
               </div>
               <div class="flex flex-col gap-1 w-full">
-                <p class="font-semibold">Password</p>
+                <p class="font-semibold">Password Confirmation</p>
                 <div class="flex items-center gap-3 p-[20px_20px] rounded-[100px] border border-[#BFBFBF] focus-within:border-[#4D73FF] transition-all duration-300">
                   <div class="w-4 h-4 flex shrink-0">
                     <img src="assets/icons/password-lock.svg" alt="icon">

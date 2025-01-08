@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PackageBankController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\PackageBookingController;
 use App\Http\Controllers\PackageTourController;
 use App\Http\Controllers\ReviewController;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/about-us', [FrontController::class, 'about_us'])->name('front.about-us');
 Route::get('/contact-us', [FrontController::class, 'contact_us'])->name('front.contact-us');
+Route::post('/contact/send-email', [FrontController::class, 'sendEmail'])->name('contact.send');
 Route::get('/travel', [FrontController::class, 'travel'])->name('front.travel');
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
 Route::get('/detail/{packageTour:slug}', [FrontController::class, 'details'])->name('front.details');
@@ -48,7 +50,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/book-finish', [FrontController::class, 'book_finish'])->name('front.book_finish');
 
         Route::post('/package-tours/{id}/reviews', [ReviewController::class, 'store'])->name('package_tours.reviews.store');
-        Route::post('/contact-us/send', [FrontController::class, 'send'])->name('contact.send');
     });
 
     // Dashboard-specific routes

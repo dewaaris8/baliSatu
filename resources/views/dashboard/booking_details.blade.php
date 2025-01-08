@@ -129,46 +129,79 @@
       </div>
     </section> --}}
     <section class="w-full h-[60vh] hero-img">
-      <div class="w-full mx-auto border-b-[2px] border-l-[2px] border-r-[2px] border-white shadow-md rounded-b-[20px] items-center flex justify-center h-[100px]">
-        <div class="w-[1300px]  h-full flex items-center justify-between">
-            <!-- Logo Section -->
-            <div class="w-[30%] flex  justify-start">
-                <img class="w-[60px] h-[60px] object-cover" src="{{asset('assets/logos/balisatulogo.png')}}" alt=""> 
-              </div>
-    
-            <!-- Navigation Links -->
-            <div class="w-[30%] text-white flex justify-center gap-[30px]">
-                <a href="{{ route('front.index') }}">Home</a>
-                <a href="">Travel</a>
-                <a href="{{ route('front.about-us') }}">About Us</a>
-                <a href="">Contact Us</a>
+      <div class="w-full mx-auto border-b-[2px] border-l-[2px] border-r-[2px] border-white shadow-md rounded-b-[20px] flex items-center justify-center h-[100px]">
+        <div class="w-full max-w-[1300px] h-full flex items-center justify-between px-4">
+          <!-- Logo Section -->
+          <div class="w-[30%] flex justify-start items-center">
+            <img class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] object-cover" src="{{ asset('assets/logos/balisatulogo.png') }}" alt="Bali Satu Logo">
+          </div>
+      
+          <!-- Navigation Links -->
+          <div class="hidden lg:flex w-max text-white items-center gap-[20px]">
+            <a href="{{ route('front.index') }}" class="hover:text-[#3dbeeb] transition">Home</a>
+            <a href="{{ route('front.travel') }}" class="hover:text-[#3dbeeb] transition">Travel</a>
+            <a href="{{ route('front.about-us') }}" class="hover:text-[#3dbeeb] transition">About Us</a>
+            <a href="{{ route('front.contact-us') }}" class="hover:text-[#3dbeeb] transition">Contact Us</a>
+            <a href="{{ route('dashboard.bookings') }}" class="hover:text-[#3dbeeb] transition">My Bookings</a>
+          </div>
+      
+          <!-- User Section -->
+          <div class="w-[30%] flex justify-end items-center gap-[10px]">
+            @if(auth()->check())
+            <!-- If Logged In: Display User Name -->
+            <div class="hidden sm:flex px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
+              Welcome, {{ auth()->user()->name }}!
             </div>
-    
-            <!-- User Section -->
-            <div class="w-[30%] gap-[10px] justify-end flex">
-                @if(auth()->check())
-                    <!-- If Logged In: Display User Name -->
-                    <div class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
-                        Welcome, {{ auth()->user()->name }}!
-                    </div>
-                @else
-                    <!-- If Not Logged In: Display Login and Register Buttons -->
-                    <a href="{{ route('login') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] bg-[#3dbeeb] text-[white] border-[#fff]">
-                        Login
-                    </a>
-                    <a href="{{ route('register') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
-                        Register
-                    </a>
-                @endif
+            @else
+            <!-- If Not Logged In: Display Login and Register Buttons -->
+            <a href="{{ route('login') }}" class="hidden px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] bg-[#3dbeeb] text-white border-[1px] border-[#fff]">
+              Login
+            </a>
+            <a href="{{ route('register') }}" class="hidden px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
+              Register
+            </a>
+            @endif
+          </div>
+      
+          <!-- Mobile Navigation Toggle -->
+          <div class="lg:hidden flex items-center text-white">
+            <button id="menu-toggle" class="p-2 focus:outline-none">
+              <i class="fa-solid fa-bars text-[20px]"></i>
+            </button>
+          </div>
+        </div>
+      
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden flex-col bg-gray-800 text-white w-full absolute top-[100px] left-0 py-4 space-y-2">
+          <a href="{{ route('front.index') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">Home</a>
+          <a href="{{ route('front.travel') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">Travel</a>
+          <a href="{{ route('front.about-us') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">About Us</a>
+          <a href="{{ route('front.contact-us') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">Contact Us</a>
+          <a href="{{ route('dashboard.bookings') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">My Bookings</a>
+          <div class="w-full flex gap-2">
+            @if(auth()->check())
+            <!-- If Logged In: Display User Name -->
+            <div class="hidden sm:flex px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
+              Welcome, {{ auth()->user()->name }}!
             </div>
+            @else
+            <!-- If Not Logged In: Display Login and Register Buttons -->
+            <a href="{{ route('login') }}" class="mx-[10px] px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] bg-[#3dbeeb] text-white border-[1px] border-[#fff]">
+              Login
+            </a>
+            <a href="{{ route('register') }}" class=" px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
+              Register
+            </a>
+            @endif
+          </div>
         </div>
       </div>
-      <div class="h-max flex flex-col justify-center mt-[10vh]  max-w-[1300px] w-full mx-auto">
+      <div class="h-max flex flex-col justify-center mt-[10vh] max-w-[80%] lg:max-w-[1300px] w-full mx-auto">
         <div class="">
           <h1 class="text-white w-[800px] text-[32px] font-semibold">Tour Booking Detail</h1>
           <p class="text-[18px] text-white">Happy Traveling</p>
         </div>
-        <div class="w-full flex gap-5 mt-4 justify-between">
+        <div class="w-full flex gap-5 lg:flex-row flex-col mt-4 justify-between">
           <div class="flex-[50%] h-max overflow-hidden  bg-white shadow-md rounded-[20px] ">
             <div class="w-full flex bg-[#FAB404] gap-[30px] items-center p-[20px] ">
               <div class="flex h-[70px] w-[80px] rounded-[100px] items-center justify-center bg-[#3DC0EC]">

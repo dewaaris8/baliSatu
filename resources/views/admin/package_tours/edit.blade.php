@@ -32,9 +32,9 @@
                         <x-input-label for="category" :value="__('category')" />
                         
                         <select name="category_id" id="category_id" class="py-3 rounded-lg pl-3 w-full border border-slate-300">
-                            <option value="">Choose category</option>
                             @foreach ($categories as $category) 
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            <option value="{{$category->id}}" {{ $category->id == $packageTour->category_id ? 'selected' : '' }}>{{$category->name}}</option>
+
                             @endforeach
                         </select>
 
