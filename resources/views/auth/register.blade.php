@@ -32,7 +32,7 @@
                 <p class="font-semibold">Name</p>
                 <div class="flex items-center gap-3 p-[20px_20px] rounded-[100px] border border-[#BFBFBF] focus-within:border-[#4D73FF] transition-all duration-300">
                   <div class="w-4 h-4 flex shrink-0">
-                    <img src="assets/icons/sms.svg" alt="icon">
+                    <img src="assets/icons/user.svg" alt="icon">
                   </div>
                   <input type="text" class="appearance-none outline-none w-full text-sm rounded-[100px] placeholder:text-[#BFBFBF] tracking-[0.35px]" placeholder="Enter Your name" name="name">
                 </div>
@@ -56,7 +56,7 @@
                 <p class="font-semibold">Phone Number</p>
                 <div class="flex items-center gap-3 p-[20px_20px] rounded-[100px] border border-[#BFBFBF] focus-within:border-[#4D73FF] transition-all duration-300">
                   <div class="w-4 h-4 flex shrink-0">
-                    <img src="assets/icons/sms.svg" alt="icon">
+                    <img src="assets/icons/telephone.svg" alt="icon">
                   </div>
                   <input type="number" name="phone_number" class="appearance-none outline-none w-full text-sm rounded-[100px] placeholder:text-[#BFBFBF] tracking-[0.35px]" placeholder="Enter Your Phone Number" >
                 </div>

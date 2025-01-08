@@ -187,7 +187,7 @@
     {{-- her0 --}}
     <section class="w-full h-screen hero-img">
       <div class="w-full mx-auto border-b-[2px] border-l-[2px] border-r-[2px] border-white shadow-md rounded-b-[20px] flex items-center justify-center h-[100px]">
-        <div class="w-full max-w-[1300px] h-full flex items-center justify-between px-4">
+        <div class="w-full max-w-[80%] lg:max-w-[1300px] h-full flex items-center justify-between">
           <!-- Logo Section -->
           <div class="w-[30%] flex justify-start items-center">
             <img class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] object-cover" src="{{ asset('assets/logos/balisatulogo.png') }}" alt="Bali Satu Logo">
@@ -262,12 +262,20 @@
           <a href="{{ route('front.about-us') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">About Us</a>
           <a href="{{ route('front.contact-us') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">Contact Us</a>
           <a href="{{ route('dashboard.bookings') }}" class="block px-4 py-2 hover:text-[#3dbeeb] transition">My Bookings</a>
+          
           <div class="w-full flex gap-2">
             @if(auth()->check())
             <!-- If Logged In: Display User Name -->
-            <div class="hidden sm:flex px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
-              Welcome, {{ auth()->user()->name }}!
+            <div class="flex flex-col">
+              <div class="mx-[10px] sm:flex px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
+                Welcome, {{ auth()->user()->name }}!
+              </div>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="mt-[10px]">
+                  @csrf
+                  <button class="ml-[15px]" type="submit">Log Out</button>
+              </form>
             </div>
+            
             @else
             <!-- If Not Logged In: Display Login and Register Buttons -->
             <a href="{{ route('login') }}" class="mx-[10px] px-[15px] py-[8px] sm:px-[20px] sm:py-[10px] lg:flex items-center rounded-[20px] bg-[#3dbeeb] text-white border-[1px] border-[#fff]">
@@ -301,7 +309,15 @@
       </div>
       <div class="lg:w-full w-[80%] mx-auto gap-5 items-center flex-col flex lg:flex-row justify-center lg:space-x-4">
         @foreach ($categories as $category)
-          <div class="lg:flex-1 w-full lg:h-[500px] h-[200px] rounded-[20px] bg-black"><img class="w-full lg:h-full h-[200px] object-cover rounded-[20px]" src="{{Storage::url($category->icon)}}" alt=""></div>
+        <div class="lg:flex-1 relative w-full lg:h-[500px] h-[200px] rounded-[20px] bg-black group">
+          <div class="absolute group-hover:opacity-0 ease-in-out duration-300 top-0 left-0 rounded-[20px] flex items-center justify-center w-full h-full bg-black opacity-50">
+          </div>
+          <h1 class="text-white group-hover:text-[#3dbeeb] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium text-[30px] z-50">
+            {{$category->name}}
+          </h1>
+          <img class="w-full lg:h-full h-[200px] object-cover rounded-[20px]" src="{{Storage::url($category->icon)}}" alt="">
+        </div>
+        
         @endforeach
       </div>      
     </section>

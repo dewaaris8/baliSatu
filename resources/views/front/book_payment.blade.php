@@ -27,9 +27,11 @@
         <div class="lg:w-[50%] w-full h-max">
           <section id="content" class="bg-white w-[80%] lg:w-[60%] mx-auto min-h-screen flex flex-col gap-8 pb-[120px]">
             <nav class="mt-8 px-4 w-full flex items-center justify-between">
-              <a href="checkout.html">
-                <img src="{{asset('assets//icons/back.png')}}" alt="back">
-              </a>
+              <a href="javascript:history.back()">
+                <img src="{{ asset('assets/icons/back.png') }}" alt="Back">
+            </a>
+            
+            
               {{-- <p class="text-center m-auto font-semibold">Payment</p> --}}
               <div class="w-12"></div>
             </nav>
@@ -60,27 +62,27 @@
                   <div class="flex flex-col gap-1">
                     <p class="text-darkGrey text-sm tracking-035 leading-[22px]">User Name</p>
                     <div class="flex items-center gap-2">
-                      <div class="w-[35px] h-[25px] flex shrink-0 overflow-hidden">
+                      {{-- <div class="w-[35px] h-[25px] flex shrink-0 overflow-hidden">
                         <img src="{{Storage::url($packageBooking->bank->logo)}}" class="w-full h-full object-contain object-center" alt="logo">
-                      </div>
+                      </div> --}}
                       <span class="text-sm tracking-035 leading-[22px]">{{$packageBooking->customer->name}}</span>
                     </div>
                   </div>
                   <div class="flex flex-col gap-1">
                     <p class="text-darkGrey text-sm tracking-035 leading-[22px]">User Email</p>
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 flex shrink-0 overflow-hidden">
+                      {{-- <div class="w-6 h-6 flex shrink-0 overflow-hidden">
                         <img src="{{asset('assets//icons/bank.svg')}}" class="w-full h-full object-contain object-center" alt="logo">
-                      </div>
+                      </div> --}}
                       <span class="text-sm tracking-035 leading-[22px]">{{$packageBooking->customer->email}}</span>
                     </div>
                   </div>
                   <div class="flex flex-col gap-1">
                     <p class="text-darkGrey text-sm tracking-035 leading-[22px]">User Number</p>
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 flex shrink-0 overflow-hidden">
+                      {{-- <div class="w-6 h-6 flex shrink-0 overflow-hidden">
                         <img src="{{asset('assets//icons/moneys.svg')}}" class="w-full h-full object-contain object-center" alt="logo">
-                      </div>
+                      </div> --}}
                       <span id="bank-number" class="text-sm tracking-035 leading-[22px]" data-value="7342333056">{{$packageBooking->customer->phone_number}}</span>
                     </div>
                   </div>

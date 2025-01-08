@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{ asset('output.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   @vite('resources/css/app.css')
 </head>
@@ -20,9 +21,13 @@
     </div>
     <div class="lg:w-[50%] w-full flex flex-col items-center justify-center h-full bg-white">
       <div class="w-[80%] h-full flex flex-col gap-[50px] justify-center">
-        <div class="">
-          <a class="text-[18px]" href="">Back to Website</a>
-        </div>
+        <a href="{{route('front.index')}}">
+          <div class="flex items-center">
+            <img src="assets/icons/back.png" alt="icon">
+            <a class="text-[18px]" href="{{route('front.index')}}"> Back to Website</a>
+          </div>
+        </a>
+        
         <div class="">
           <h1 class="text-[34px] font-medium">Welcome!</h1>
           <p class="text-[20px]"><a class="font-semibold underline" href="{{route('register')}}">Create a free account </a>or login to start your holiday</p>
