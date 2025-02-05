@@ -20,6 +20,18 @@
         background-size: cover;
         background-position: center;
     }
+
+    .star-rating input:checked ~ label svg,
+    .star-rating label:hover svg,
+    .star-rating label:hover ~ label svg {
+        fill: #fbbf24; /* Change to your desired star color */
+        stroke: #fbbf24;
+    }
+
+    .star-rating input:checked + label svg {
+        fill: #fbbf24; /* Change to your desired star color */
+        stroke: #fbbf24;
+    }
     </style>
 </head>
 <body class="font-poppins text-black">
@@ -283,33 +295,115 @@
                 {{$packageBooking->tour->about}}
               </p>
             </div>
-            <div class="flex flex-col gap-3">
-              <p class="font-medium text-[18px]">Leave a Review</p>
+            <div class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md">
+              <p class="font-medium text-xl text-gray-800">Leave a Review</p>
+          
               <form action="{{ route('package_tours.reviews.store', $packageBooking->tour->id) }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="rating" class="block text-sm">Rating (1-5):</label>
-                    <select name="rating" id="rating" class="w-full p-2 border rounded">
-                        <option value="1">1 - Poor</option>
-                        <option value="2">2 - Fair</option>
-                        <option value="3">3 - Good</option>
-                        <option value="4">4 - Very Good</option>
-                        <option value="5">5 - Excellent</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="review" class="block text-sm">Review:</label>
-                    <textarea name="review" id="review" rows="4" class="w-full p-2 border rounded" placeholder="Write your review..."></textarea>
-                </div>
-                <button type="submit" class="bg-blue w-full text-white p-2 rounded">Submit Review</button>
-            </form>
-            </div>
+                  @csrf
+                  <!-- Star Rating -->
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">Rating (1-5):</label>
+                      <div class="flex space-x-1">
+                          <!-- Star Rating Inputs -->
+                          <div class="star-rating flex">
+                              <!-- Star 5 -->
+                              <input type="radio" id="star5" name="rating" value="5" class="hidden" />
+                              <label for="star5" class="cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors">
+                                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                  </svg>
+                              </label>
+                              <!-- Star 4 -->
+                              <input type="radio" id="star4" name="rating" value="4" class="hidden" />
+                              <label for="star4" class="cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors">
+                                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                  </svg>
+                              </label>
+                              <!-- Star 3 -->
+                              <input type="radio" id="star3" name="rating" value="3" class="hidden" />
+                              <label for="star3" class="cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors">
+                                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                  </svg>
+                              </label>
+                              <!-- Star 2 -->
+                              <input type="radio" id="star2" name="rating" value="2" class="hidden" />
+                              <label for="star2" class="cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors">
+                                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                  </svg>
+                              </label>
+                              <!-- Star 1 -->
+                              <input type="radio" id="star1" name="rating" value="1" class="hidden" />
+                              <label for="star1" class="cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors">
+                                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                  </svg>
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+          
+                  <!-- Review Textarea -->
+                  <div class="mb-4">
+                      <label for="review" class="block text-sm font-medium text-gray-700 mb-2">Review:</label>
+                      <textarea
+                          name="review"
+                          id="review"
+                          rows="4"
+                          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder="Write your review..."
+                      ></textarea>
+                      <!-- Optional: Character Counter -->
+                      <div class="text-sm text-gray-500 mt-1 text-right">Max 500 characters</div>
+                  </div>
+          
+                  <!-- Submit Button -->
+                  <button
+                      type="submit"
+                      class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+                  >
+                      Submit Review
+                  </button>
+              </form>
+          </div>
+          
+          <!-- SweetAlert Script for Notifications -->
+          @if(session('success'))
+              <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Success!',
+                          text: '{{ session('success') }}',
+                          confirmButtonText: 'OK'
+                      });
+                  });
+              </script>
+          @endif
+          
+          @if(session('error'))
+              <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Error!',
+                          text: '{{ session('error') }}',
+                          confirmButtonText: 'OK'
+                      });
+                  });
+              </script>
+          @endif
+          
+          
+          
             
           </div>
         </div>
       </div>
     </section>
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{asset('js/dropdownmenu.js')}}"></script>
     <script src="{{asset('js/responsivenavbar.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
@@ -355,6 +449,14 @@
               });
           });
       });
+  </script>
+  <script>
+    document.querySelectorAll('.star-rating input').forEach((input) => {
+        input.addEventListener('change', (e) => {
+            const selectedRating = e.target.value;
+            console.log(`Selected rating: ${selectedRating}`);
+        });
+    });
   </script>
   
   

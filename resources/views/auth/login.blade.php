@@ -53,7 +53,8 @@
                   </div>
                   <input type="password" class="appearance-none rounded-[100px] outline-none w-full text-sm placeholder:text-[#BFBFBF] tracking-[0.35px]" placeholder="Enter your valid password" name="password">
                 </div>
-                {{-- <p class="w-full text-right mt-5 text-sm tracking-035 text-darkGrey"><a href="{{ route('register') }}" class="underline text-black font-semibold tracking-[0.6px]">Forget password?</a></p> --}}
+                <p class="w-full text-right mt-5 text-sm tracking-035 text-darkGrey"><a href="{{ route('password.request') }}
+" class="underline text-black font-semibold tracking-[0.6px]">Forget password?</a></p>
               </div>
             </div>
             @if ($errors->any())

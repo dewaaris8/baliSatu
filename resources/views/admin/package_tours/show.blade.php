@@ -31,6 +31,7 @@
                     <div class="hidden md:flex flex-row items-center gap-x-3">
                         <a href="{{ Route('admin.package_tours.edit', $packageTour) }}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">Edit</a>
                         <a href="{{ Route('admin.tour_inclusions.create', $packageTour) }}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">Add Inclusion or Exclusion</a>
+                        <a href="{{ Route('admin.tour_plans.create', $packageTour) }}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">Add Tour Plans</a>
                         <form action="{{ Route('admin.package_tours.destroy', $packageTour) }}" method="POST">
                             @csrf
                             @method('DELETE')
@@ -53,7 +54,7 @@
     
                 <!-- Tour Inclusions -->
                 <div>
-                    <h3 class="text-indigo-950 text-xl font-bold">Tour Inclusions</h3>
+                    <h3 class="text-indigo-950 text-xl font-bold">Tour Inclusions and Exclusions</h3>
                     <ul class="list-disc pl-5">
                         @forelse ($tour_inclusions as $inclusion)
                             <li class="text-slate-700 text-sm">{{ $inclusion->description }}</li>

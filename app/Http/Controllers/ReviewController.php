@@ -28,31 +28,50 @@ class ReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $packageTourId)
-    {
-        $user = Auth::user();
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'review' => 'nullable|string|max:255',
-        ]);
+public function store(Request $request, $packageTourId)
+{
+    $user = Auth::user();
 
-        $bookingExists = PackageBooking::where('user_id', $user->id)
-            ->where('package_tour_id', $packageTourId)
-            ->exists();
+    // Validate the request
+    $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+        'review' => 'nullable|string|max:255',
+    ]);
 
-        if (!$bookingExists) {
-            return redirect()->back()->with('error', 'You can only review tours you have purchased.');
-        }
+    // Check if the user has purchased the package
+    $booking = PackageBooking::where('user_id', $user->id)
+        ->where('package_tour_id', $packageTourId)
+        ->first();
 
-        Review::create([
-            'user_id' => $user->id,
-            'package_tour_id' => $packageTourId,
-            'rating' => $request->rating,
-            'review' => $request->review,
-        ]);
-
-        return redirect()->back()->with('success', 'Review submitted successfully.');
+    if (!$booking) {
+        return redirect()->back()->with('error', 'You can only review tours you have purchased.');
     }
+
+    // Check if a review already exists for this booking
+    $reviewExists = Review::where('user_id', $user->id)
+        ->where('package_tour_id', $packageTourId)
+        ->where('created_at', '>=', $booking->created_at) // Ensure review is tied to the current booking
+        ->exists();
+
+    if ($reviewExists) {
+        return redirect()->back()->with('error', 'You have already reviewed this purchase. To review again, please purchase the package again.');
+    }
+
+    // Create a new review
+    Review::create([
+        'user_id' => $user->id,
+        'package_tour_id' => $packageTourId,
+        'rating' => $request->rating,
+        'review' => $request->review,
+    ]);
+
+    // Flash success message
+    return redirect()->back()->with('success', 'Review submitted successfully.');
+}
+
+
+    
+
 
     /**
      * Display the specified resource.

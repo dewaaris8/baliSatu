@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-row justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Manage Bookings') }}
+                {{ __('Booking Report') }}
             </h2>
         </div>
     </x-slot>
@@ -40,56 +40,119 @@
                 </form>
             </div>
 
-            <!-- Bookings List -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
-                @forelse ($package_bookings as $booking)
-                <div class="item-card flex flex-row justify-between items-center">
-                    <div class="flex flex-row items-center gap-x-3">
-                        <img src="{{ Storage::url($booking->tour->thumbnail) }}" 
-                             alt="{{ $booking->tour->name }}" 
-                             class="rounded-2xl object-cover w-[120px] h-[90px]">
-                        <div class="flex flex-col">
-                            <h3 class="text-indigo-950 text-xl font-bold">{{ $booking->tour->name }}</h3>
-                            <p class="text-slate-500 text-sm">{{ $booking->tour->category->name }}</p>
-                        </div>
-                    </div> 
-
-                    <!-- Status -->
-                    <span class="w-fit text-sm font-bold py-2 px-3 rounded-full bg-green-500 text-white">
-                        SUCCESS
-                    </span>
-
-                    <!-- Additional Details -->
-                    <div class="hidden md:flex flex-col">
-                        <p class="text-slate-500 text-sm">Price</p>
-                        <h3 class="text-indigo-950 text-xl font-bold">
-                            Rp {{ number_format($booking->tour->price, 0, ',', '.') }}
-                        </h3>
+            <!-- Report Summary -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">Report Summary</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">Total Bookings</p>
+                        <p class="text-xl font-bold">{{ $package_bookings->total() }}</p>
                     </div>
-                    <div class="hidden md:flex flex-col">
-                        <p class="text-slate-500 text-sm">Total Days</p>
-                        <h3 class="text-indigo-950 text-xl font-bold">{{ $booking->tour->days }} Days</h3>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">Total Revenue</p>
+                        <p class="text-xl font-bold">Rp {{ number_format($package_bookings->sum('total_amount'), 0, ',', '.') }}</p>
                     </div>
-                    <div class="hidden md:flex flex-col">
-                        <p class="text-slate-500 text-sm">Quantity</p>
-                        <h3 class="text-indigo-950 text-xl font-bold">{{ $booking->quantity }} People</h3>
-                    </div>
-                    <div class="hidden md:flex flex-row items-center gap-x-3">
-                        <a href="{{ route('admin.package_bookings.show', $booking) }}" 
-                           class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
-                            Details
-                        </a>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">Average Booking Value</p>
+                        <p class="text-xl font-bold">Rp {{ number_format($package_bookings->avg('total_amount'), 0, ',', '.') }}</p>
                     </div>
                 </div>
-                @empty
-                <p class="text-gray-500">No bookings found</p>
-                @endforelse
+            </div>
+
+            <!-- Bookings Table -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">Bookings List</h3>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tour Name
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Category
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Price
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Days
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Order Date
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($package_bookings as $booking)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <img src="{{ Storage::url($booking->tour->thumbnail) }}" 
+                                         alt="{{ $booking->tour->name }}" 
+                                         class="rounded-2xl object-cover w-[60px] h-[45px] mr-3">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ $booking->tour->name }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $booking->tour->category->name }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Rp {{ number_format($booking->total_amount, 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $booking->tour->days }} Days
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $booking->created_at->format('M d, Y') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-sm font-bold rounded-full bg-green-500 text-white">
+                                    SUCCESS
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="{{ route('admin.package_bookings.show', $booking) }}" 
+                                   class="text-indigo-600 hover:text-indigo-900">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                No bookings found
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
                 <!-- Pagination -->
                 <div class="mt-6">
                     {{ $package_bookings->links() }}
                 </div>
             </div>
+
+            <!-- Export Options -->
+            {{-- <div class="mt-6 flex justify-end gap-x-3">
+                <a href="#" class="bg-green-500 text-white px-4 py-2 rounded-md">
+                    Export as PDF
+                </a>
+                <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                    Export as Excel
+                </a>
+                <a href="#" class="bg-gray-500 text-white px-4 py-2 rounded-md">
+                    Export as CSV
+                </a>
+            </div> --}}
         </div>
     </div>
 </x-app-layout>

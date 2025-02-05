@@ -94,7 +94,8 @@
                     </div>
                   </div>
                   <div >
-                    <button class="w-full bg-[#3dbeeb] flex items-center  justify-center p-[16px_24px] rounded-xl text-white" id="pay-button">Confirm</button></div>
+                      <button class="w-full bg-[#3dbeeb] flex items-center  justify-center p-[16px_24px] rounded-xl text-white" id="pay-button">Confirm</button>
+                  </div>
                 </div>
               </div>
               <div class="flex flex-col gap-3 px-4 ">
@@ -117,19 +118,15 @@
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>
     <script type="text/javascript">
       document.getElementById('pay-button').onclick = function(){
-        // SnapToken acquired from previous step
         snap.pay('{{ $packageBooking->snap_token }}', {
-          // Optional
           onSuccess: function(result){
             window.location.href = '{{route('front.checkout_success', $packageBooking->id)}}';
           },
-          // Optional
           onPending: function(result){
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
           },
-          // Optional
           onError: function(result){
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
           }
         });
       };
