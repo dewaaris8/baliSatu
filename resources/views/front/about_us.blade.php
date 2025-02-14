@@ -1,5 +1,5 @@
 @extends('front.layouts.app')
-
+<link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
 @section('content')
 
 <style>

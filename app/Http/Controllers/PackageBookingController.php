@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PackageBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PackageBookingController extends Controller
 {
@@ -44,8 +45,24 @@ class PackageBookingController extends Controller
     return view('admin.package_bookings.index', compact('package_bookings'));
 }
 
+public function exportPDF(Request $request)
+{
+    $query = PackageBooking::with(['tour.category']);
+    
+    if ($request->month) {
+        $query->whereMonth('created_at', $request->month);
+    }
+    if ($request->year) {
+        $query->whereYear('created_at', $request->year);
+    }
+    
+    $package_bookings = $query->get();
 
+    // Tidak lagi menggunakan static method
+    $pdf = Pdf::loadView('admin.package_bookings.pdf', compact('package_bookings'));
 
+    return $pdf->download('booking_report.pdf');
+}
     /**
      * Show the form for creating a new resource.
      */

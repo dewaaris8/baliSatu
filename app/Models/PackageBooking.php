@@ -25,8 +25,6 @@ class PackageBooking extends Model
         'proof', 
         'snap_token'// add this field to ensure it's filled
     ];
-    
-    
 
     protected $casts = [
         'start_date' => 'date',

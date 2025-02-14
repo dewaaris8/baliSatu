@@ -31,6 +31,10 @@ class PackageTour extends Model
         return $this->hasMany(PackagePhoto::class);
     }
 
+    public function bookings()
+    {
+    return $this->hasMany(PackageBooking::class, 'package_tour_id');
+    }
     public function tour_inclusions()
     {
         return $this->hasMany(TourInclusion::class);
@@ -50,23 +54,24 @@ class PackageTour extends Model
      * Boot model events to handle cascading soft deletes.
      */
     protected static function booted()
-    {
-        static::deleting(function ($packageTour) {
-            if ($packageTour->isForceDeleting()) {
-                // Hard delete related tour_plans and tour_inclusions
-                $packageTour->tour_plans()->forceDelete();
-                $packageTour->tour_inclusions()->forceDelete();
-            } else {
-                // Soft delete related tour_plans and tour_inclusions
-                $packageTour->tour_plans()->delete();
-                $packageTour->tour_inclusions()->delete();
-            }
-        });
+{
+    static::deleting(function ($packageTour) {
+        // Set package_tour_id menjadi null di PackageBooking sebelum menghapus PackageTour
+        $packageTour->bookings()->update(['package_tour_id' => null]);
 
-        static::restoring(function ($packageTour) {
-            // Restore related tour_plans and tour_inclusions when a package tour is restored
-            $packageTour->tour_plans()->withTrashed()->restore();
-            $packageTour->tour_inclusions()->withTrashed()->restore();
-        });
-    }
+        if ($packageTour->isForceDeleting()) {
+            $packageTour->tour_plans()->forceDelete();
+            $packageTour->tour_inclusions()->forceDelete();
+        } else {
+            $packageTour->tour_plans()->delete();
+            $packageTour->tour_inclusions()->delete();
+        }
+    });
+
+    static::restoring(function ($packageTour) {
+        $packageTour->tour_plans()->withTrashed()->restore();
+        $packageTour->tour_inclusions()->withTrashed()->restore();
+    });
+}
+
 }

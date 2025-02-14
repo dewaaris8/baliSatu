@@ -52,9 +52,16 @@
                         <p class="text-sm text-gray-600">Total Revenue</p>
                         <p class="text-xl font-bold">Rp {{ number_format($package_bookings->sum('total_amount'), 0, ',', '.') }}</p>
                     </div>
+                    @php
+                        $now = now();
+                        $completedBookings = $package_bookings->filter(function ($booking) use ($now) {
+                            return \Carbon\Carbon::parse($booking->end_date)->lt($now);
+                        })->count();
+                    @endphp
+
                     <div class="bg-gray-100 p-4 rounded-lg">
-                        <p class="text-sm text-gray-600">Average Booking Value</p>
-                        <p class="text-xl font-bold">Rp {{ number_format($package_bookings->avg('total_amount'), 0, ',', '.') }}</p>
+                        <p class="text-sm text-gray-600">Total Completed Bookings</p>
+                        <p class="text-xl font-bold">{{ $completedBookings }}</p>
                     </div>
                 </div>
             </div>
@@ -65,27 +72,13 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Tour Name
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Category
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Price
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Days
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Order Date
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tour Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -93,22 +86,28 @@
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <img src="{{ Storage::url($booking->tour->thumbnail) }}" 
-                                         alt="{{ $booking->tour->name }}" 
-                                         class="rounded-2xl object-cover w-[60px] h-[45px] mr-3">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{ $booking->tour->name }}
-                                    </div>
+                                    @if ($booking->tour)
+                                        <img src="{{ Storage::url($booking->tour->thumbnail) }}" 
+                                             alt="{{ $booking->tour->name }}" 
+                                             class="rounded-2xl object-cover w-[60px] h-[45px] mr-3">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ $booking->tour->name }}
+                                        </div>
+                                    @else
+                                        <div class="text-sm font-medium text-red-500">
+                                            Tour Deleted
+                                        </div>
+                                    @endif
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $booking->tour->category->name }}
+                                {{ $booking->tour?->category?->name ?? 'N/A' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 Rp {{ number_format($booking->total_amount, 0, ',', '.') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $booking->tour->days }} Days
+                                {{ $booking->tour?->days ? $booking->tour->days . ' Days' : 'N/A' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $booking->created_at->format('M d, Y') }}
@@ -142,17 +141,11 @@
             </div>
 
             <!-- Export Options -->
-            {{-- <div class="mt-6 flex justify-end gap-x-3">
-                <a href="#" class="bg-green-500 text-white px-4 py-2 rounded-md">
+            <div class="mt-6 flex justify-end gap-x-3">
+                <a href="{{ route('admin.package_bookings.export_pdf', request()->query()) }}" class="bg-green-500 text-white px-4 py-2 rounded-md">
                     Export as PDF
                 </a>
-                <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-md">
-                    Export as Excel
-                </a>
-                <a href="#" class="bg-gray-500 text-white px-4 py-2 rounded-md">
-                    Export as CSV
-                </a>
-            </div> --}}
+            </div>
         </div>
     </div>
 </x-app-layout>

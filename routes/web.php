@@ -91,6 +91,8 @@ Route::middleware('auth')->group(function () {
         Route::middleware('can:manage transactions')->group(function () {
             Route::resource('package_bookings', PackageBookingController::class);
         });
+
+        Route::get('/admin/package-bookings/export-pdf', [PackageBookingController::class, 'exportPDF'])->name('package_bookings.export_pdf');
     });
 });
 

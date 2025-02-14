@@ -9,41 +9,6 @@
   @vite('resources/css/app.css')
 </head>
 <body class="font-poppins text-black">
-    {{-- <div class="w-full bg-[#15192d] mx-auto border-[1px] border-[#6666662d] shadow-md rounded-b-[20px] items-center flex justify-center h-[100px]">
-      <div class="w-[1300px] h-full flex items-center justify-between">
-          <!-- Logo Section -->
-          <div class="w-[30%] flex justify-start">
-              <img class="w-[60px] h-[60px] object-cover" src="{{asset('assets/logos/balisatulogo.png')}}" alt=""> 
-            </div>
-    
-          <!-- Navigation Links -->
-          <div class="w-max text-white flex justify-center gap-[30px]">
-            <a href="{{ route('front.index') }}">Home</a>
-            <a href="{{route('front.travel')}}">Travel</a>
-            <a href="{{ route('front.about-us') }}">About Us</a>
-            <a href="{{route ('front.contact-us') }}">Contact Us</a>
-            <a href="{{route ('dashboard.bookings') }}">My Bookings</a>
-          </div>
-    
-          <!-- User Section -->
-          <div class="w-[30%] gap-[10px] justify-end flex">
-              @if(auth()->check())
-                  <!-- If Logged In: Display User Name -->
-                  <div class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] text-[#3dbeeb] font-medium border-[#fff]">
-                      Welcome, {{ auth()->user()->name }}!
-                  </div>
-              @else
-                  <!-- If Not Logged In: Display Login and Register Buttons -->
-                  <a href="{{ route('login') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] border-[1px] bg-[#3dbeeb] text-[white] border-[#fff]">
-                      Login
-                  </a>
-                  <a href="{{ route('register') }}" class="px-[20px] py-[10px] flex items-center rounded-[20px] text-[#3dbeeb] border-[1px] border-[#3dbeeb]">
-                      Register
-                  </a>
-              @endif
-          </div>
-      </div>
-    </div>  --}}
     <div class="w-full mx-auto bg-[#15192d] border-b-[2px] border-l-[2px] border-r-[2px] border-white shadow-md rounded-b-[20px] flex items-center justify-center h-[100px]">
       <div class="w-full max-w-[80%] lg:max-w-[1300px] h-full flex items-center justify-between ">
         <!-- Logo Section -->
@@ -189,17 +154,6 @@
         </div>
         
         <!-- Slider Container -->
-        {{-- <div class="overflow-hidden rounded-lg h-max" id="embla">
-          <div class="flex touch-pan-y">
-            @foreach ($latestPhotos as $photo )
-            <div class="lg:flex-[0_0_66%]  h-[421px] pr-4">
-              <a href="{{Storage::url($photo->photo)}}" class="">
-                <img src="{{Storage::url($photo->photo)}}" class="rounded-lg object-cover h-full w-full" alt="thumbnail">
-              </a>
-            </div>  
-            @endforeach
-          </div>
-        </div> --}}
         <div class="overflow-hidden rounded-lg h-max" id="embla">
           <div class="flex touch-pan-y">
               @foreach ($latestPhotos as $photo)
@@ -356,105 +310,11 @@
             @endif
             
               </div>
-              
-
-        
               <!-- Price and Booking -->
-              {{-- <div class="w-full flex justify-between">
-                <div class="flex justify-center flex-col">
-                  <h3 class="text-[#000000] opacity-[50%] text-[12px]">price</h3>
-                  <div class="text-[20px] font-medium">Rp. 1200k <span class="text-[#000000] opacity-[50%] text-[12px]">/ person</span></div>
-                </div>
-                <div class="flex justify-center items-center">
-                  <a href="">
-                    <div class="rounded-[20px] bg-[#0077FF] text-[14px] font-medium text-[#fff] py-[20px] px-[30px]">Booking Now</div>
-                  </a>
-                </div>
-              </div> --}}
             </div>
         
             <!-- Right Section -->
             <div class="lg:w-[33%] w-full border-[1px] border-[#0000002d] flex gap-[10px] rounded-[20px] flex-col p-[20px]">
-              {{-- <h1 class="text-[20px] text-[#fdb304] font-medium mb-2">Reviews and Rating</h1>
-              <div class="flex text-yellow-500">
-                
-                @for ($i = 1; $i <= 5; $i++)
-                    @if($i <= $averageRating)
-                        <!-- Filled Star -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 .587l3.668 7.431 8.2 1.19-5.934 5.787 1.4 8.178L12 18.897 4.666 23.173l1.4-8.178L0 9.208l8.2-1.19z"/>
-                        </svg>
-                    @else
-                        <!-- Outline Star -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 .587l3.668 7.431 8.2 1.19-5.934 5.787 1.4 8.178L12 18.897 4.666 23.173l1.4-8.178L0 9.208l8.2-1.19z"/>
-                        </svg>
-                    @endif
-                @endfor
-                <div class="mx-4 flex flex-col gap-3 bg-white p-[16px_24px] rounded-[22px]">
-                  <h2 class="font-semibold">Testimonial</h2>
-                  <div class="flex flex-col gap-1">
-                    <div class="flex items-center justify-between gap-2">
-                      <div class="flex items-center gap-1">
-                        <div class="w-12 h-12 border-4 border-white rounded-full overflow-hidden flex shrink-0 shadow-[6px_8px_20px_0_#00000008]">
-                          <img src="{{asset('assets/photos/pfp2.png')}}" class="w-full h-full object-cover object-center" alt="photo">
-                        </div>
-                        <div class="flex flex-col gap-1">
-                          <p class="font-bold text-sm leading-[22px] tracking-035">James Sullivan</p>
-                          <p class="text-darkGrey text-xs leading-[20px] tracking-035">1 week ago</p>
-                        </div>
-                      </div>
-                      <div class="flex gap-1 items-center">
-                        <img src="{{asset('assets/icons/Star.svg')}}" alt="icon">
-                        <img src="{{asset('assets/icons/Star.svg')}}" alt="icon">
-                        <img src="{{asset('assets/icons/Star.svg')}}" alt="icon">
-                        <img src="{{asset('assets/icons/Star.svg')}}" alt="icon">
-                        <img src="{{asset('assets/icons/Star.svg')}}" alt="icon">
-                      </div>
-                    </div>
-                    <p class="text-sm leading-[22px] tracking-035 text-darkGrey">The view was good, also I really love the weather. It’s very warm and good for healing</p>
-                  </div>
-                  <hr>
-                  <div class="flex gap-4">
-                    <div class="flex flex-col gap-3">
-                      <p class="font-semibold">2.547 <span class="font-normal text-sm leading-[22px] tracking-035 text-darkGrey">Reviews</span></p>
-                      <div class="flex items-center">
-                        <div class="w-12 h-12 border-4 border-white rounded-full overflow-hidden flex shrink-0 shadow-[6px_8px_20px_0_#00000008] -ml-2 first-of-type:-ml-1">
-                          <img src="{{asset('assets/photos/pfp2.png')}}" class="w-full h-full object-cover object-center" alt="photo">
-                        </div>
-                        <div class="w-12 h-12 border-4 border-white rounded-full overflow-hidden flex shrink-0 shadow-[6px_8px_20px_0_#00000008] -ml-2 first-of-type:-ml-1">
-                          <img src="{{asset('assets/photos/pfp3.png')}}" class="w-full h-full object-cover object-center" alt="photo">
-                        </div>
-                        <div class="w-12 h-12 border-4 border-white rounded-full overflow-hidden flex shrink-0 shadow-[6px_8px_20px_0_#00000008] -ml-2 first-of-type:-ml-1">
-                          <img src="{{asset('assets/photos/pfp4.png')}}" class="w-full h-full object-cover object-center" alt="photo">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="flex flex-col gap-3">
-                      <p class="font-semibold">Photo & Video</p>
-                      <div class="flex gap-1">
-                        <div class="w-12 h-12 flex shrink-0 rounded-lg overflow-hidden relative">
-                          <img src="{{asset('assets/thumbnails/nusa-penida.jpg')}}" class="w-full h-full object-cover object-center" alt="thumbnail">
-                        </div>
-                        <div class="w-12 h-12 flex shrink-0 rounded-lg overflow-hidden relative">
-                          <img src="{{asset('assets/thumbnails/raja.jpg')}}" class="w-full h-full object-cover object-center" alt="thumbnail">
-                        </div>
-                        <div class="w-12 h-12 flex shrink-0 rounded-lg overflow-hidden relative">
-                          <img src="{{asset('assets/thumbnails/santorini.jpg')}}" class="w-full h-full object-cover object-center" alt="thumbnail">
-                          <div class="w-12 h-12 flex items-center justify-center bg-[#1c273080] absolute">
-                            <span class="font-semibold text-white">101+</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <a href="" class="flex items-center justify-between py-2 text-blue">
-                    <span class="font-semibold text-sm leading-[22px] tracking-035">Read 2.546 more review</span>
-                    <div>
-                      <img src="{{asset('assets/icons/arrow-circle-right.svg')}}" alt="icon">
-                    </div>
-                  </a>
-                </div> --}}
                 <div class="w-[100%] flex gap-[10px] rounded-[20px] flex-col p-[20px] bg-white">
                   <h2 class="text-xl font-bold text-gray-800">Book Your Travel Package</h2>
                   <form method="POST"  action="{{route('front.book_store', $packageTour->slug)}}" class="flex flex-col gap-4">
@@ -472,16 +332,16 @@
                       </div>
                       <!-- Start Date -->
                       <div>
-                          <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
-                          <input 
-                              type="date" 
-                              id="start_date" 
-                              name="start_date" 
-                              class="w-full border border-gray-300 rounded-md p-2 mt-1" 
-                              required 
-                              onchange="calculateEndDate()" 
-                          />
-                      </div>
+                        <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+                        <input 
+                            type="date" 
+                            id="start_date" 
+                            name="start_date" 
+                            class="w-full border border-gray-300 rounded-md p-2 mt-1" 
+                            required 
+                            onchange="calculateEndDate()" 
+                        />
+                    </div>
                       <!-- End Date -->
                       <div>
                           <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
@@ -493,17 +353,6 @@
                           />
                       </div>
                       <!-- Number of Packages -->
-                      {{-- <div>
-                          <label for="quantity" class="block text-sm font-medium text-gray-700">Number of Packages</label>
-                          <input 
-                              type="number" 
-                              id="quantity" 
-                              name="quantity" 
-                              class="w-full border border-gray-300 rounded-md p-2 mt-1" 
-                              min="1" 
-                              required 
-                          />
-                      </div> --}}
                       <div class="flex bg-black flex-col gap-3">
                         <div class="bg-white flex items-center gap-3">
                           <div class="w-[72px] h-[72px] flex shrink-0 rounded-xl overflow-hidden">
@@ -552,17 +401,6 @@
                         @endif
                           </div>
                         </div>
-                        {{-- <label class="block text-sm font-medium text-gray-700">User Details</label>
-                        @if(auth()->check())
-                            <p class="text-gray-800 font-medium">
-                                {{ Auth::user()->name }} <br>
-                                {{ Auth::user()->email }}
-                            </p>
-                        @else
-                            <p class="text-gray-500 font-medium">
-                                You are not logged in.
-                            </p>
-                        @endif --}}
                       </div>
                       <!-- Payment Summary -->
                       <div>
@@ -591,7 +429,6 @@
                           Book Now
                       </button>
                   </form>
-              </div>
               </div>
             </div>
           </div>
@@ -668,6 +505,21 @@
     }
             </script>
             <script src="{{asset('js/booking.js')}}"></script>
+            <script>
+              // Fungsi untuk mengatur tanggal minimum
+              function setMinDate() {
+                  const today = new Date();
+                  const year = today.getFullYear();
+                  const month = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                  const day = String(today.getDate()).padStart(2, '0');
+                  
+                  const minDate = `${year}-${month}-${day}`;
+                  document.getElementById('start_date').setAttribute('min', minDate);
+              }
+          
+              // Jalankan fungsi saat halaman dimuat
+              window.onload = setMinDate;
+          </script>
 
             
     

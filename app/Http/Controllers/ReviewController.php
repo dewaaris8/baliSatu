@@ -54,7 +54,7 @@ public function store(Request $request, $packageTourId)
         ->exists();
 
     if ($reviewExists) {
-        return redirect()->back()->with('error', 'You have already reviewed this purchase. To review again, please purchase the package again.');
+        return redirect()->back()->with('error', 'You have already reviewed this package.');
     }
 
     // Create a new review
